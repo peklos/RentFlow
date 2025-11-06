@@ -6,14 +6,14 @@
           <router-link to="/" class="logo">
             <span class="text-3xl font-bold text-gradient">RentFlow</span>
           </router-link>
-          <h1 class="auth-title">Welcome Back</h1>
-          <p class="text-secondary">Sign in to your account</p>
+          <h1 class="auth-title">С возвращением</h1>
+          <p class="text-secondary">Войдите в свой аккаунт</p>
         </div>
 
         <form @submit.prevent="handleLogin" class="auth-form">
           <BaseInput
             v-model="form.phone"
-            label="Phone Number"
+            label="Номер телефона"
             type="tel"
             placeholder="+7 (999) 123-45-67"
             :error="errors.phone"
@@ -22,9 +22,9 @@
 
           <BaseInput
             v-model="form.password"
-            label="Password"
+            label="Пароль"
             type="password"
-            placeholder="Enter your password"
+            placeholder="Введите пароль"
             :error="errors.password"
             required
           />
@@ -40,21 +40,21 @@
             :loading="loading"
             class="w-full"
           >
-            Sign In
+            Войти
           </BaseButton>
         </form>
 
         <div class="auth-footer">
           <p class="text-secondary">
-            Don't have an account?
+            Нет аккаунта?
             <router-link to="/client/register" class="text-primary font-medium">
-              Sign Up
+              Регистрация
             </router-link>
           </p>
           <p class="text-tertiary mt-md">
-            Are you an employee?
+            Вы сотрудник?
             <router-link to="/employee/login" class="text-secondary font-medium">
-              Employee Login
+              Вход для сотрудников
             </router-link>
           </p>
         </div>
@@ -93,11 +93,11 @@ const handleLogin = async () => {
 
   // Validation
   if (!form.value.phone) {
-    errors.value.phone = 'Phone number is required'
+    errors.value.phone = 'Введите номер телефона'
     return
   }
   if (!form.value.password) {
-    errors.value.password = 'Password is required'
+    errors.value.password = 'Введите пароль'
     return
   }
 
@@ -109,7 +109,7 @@ const handleLogin = async () => {
     })
     router.push('/client/profile')
   } catch (error) {
-    errors.value.general = error.response?.data?.detail || 'Login failed. Please try again.'
+    errors.value.general = error.response?.data?.detail || 'Ошибка входа. Попробуйте снова.'
   } finally {
     loading.value = false
   }

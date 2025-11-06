@@ -20,23 +20,23 @@
 
       <!-- Navigation -->
       <nav class="flex items-center gap-lg">
-        <router-link to="/properties" class="nav-link">Properties</router-link>
+        <router-link to="/properties" class="nav-link">Объекты</router-link>
 
         <template v-if="authStore.isAuthenticated">
           <router-link v-if="authStore.isClient" to="/client/profile" class="nav-link">
-            My Account
+            Мой Профиль
           </router-link>
           <router-link v-if="authStore.isEmployee" to="/admin/dashboard" class="nav-link">
-            Dashboard
+            Панель
           </router-link>
-          <BaseButton variant="ghost" @click="handleLogout">Logout</BaseButton>
+          <BaseButton variant="ghost" @click="handleLogout">Выйти</BaseButton>
         </template>
         <template v-else>
           <router-link to="/client/login">
-            <BaseButton variant="outline">Login</BaseButton>
+            <BaseButton variant="outline">Войти</BaseButton>
           </router-link>
           <router-link to="/client/register">
-            <BaseButton variant="primary">Sign Up</BaseButton>
+            <BaseButton variant="primary">Регистрация</BaseButton>
           </router-link>
         </template>
       </nav>

@@ -4,16 +4,16 @@
 
     <div class="properties-page">
       <div class="container">
-        <h1 class="page-title">Available Properties</h1>
+        <h1 class="page-title">Доступные объекты</h1>
 
         <!-- Filters -->
         <BaseCard class="mb-xl">
           <div class="grid grid-cols-4 gap-md">
-            <BaseInput v-model="filters.type" label="Type" placeholder="All" />
-            <BaseInput v-model="filters.min_price" label="Min Price" type="number" />
-            <BaseInput v-model="filters.max_price" label="Max Price" type="number" />
+            <BaseInput v-model="filters.type" label="Тип" placeholder="Все" />
+            <BaseInput v-model="filters.min_price" label="Мин. цена" type="number" />
+            <BaseInput v-model="filters.max_price" label="Макс. цена" type="number" />
             <BaseButton variant="primary" @click="applyFilters" style="margin-top: 1.5rem;">
-              Apply Filters
+              Применить
             </BaseButton>
           </div>
         </BaseCard>
@@ -24,7 +24,7 @@
         </div>
 
         <div v-else-if="properties.length === 0" class="text-center text-secondary">
-          <p class="text-xl">No properties found</p>
+          <p class="text-xl">Объекты не найдены</p>
         </div>
 
         <div v-else class="grid grid-cols-3 gap-lg">
@@ -43,35 +43,35 @@
             </div>
 
             <h3 class="text-xl font-semibold mt-md mb-sm">
-              {{ property.type }} Property
+              Недвижимость {{ property.type }}
             </h3>
 
             <p class="text-secondary mb-md">{{ property.address }}</p>
 
             <div class="property-details">
               <div class="detail-item">
-                <span class="text-tertiary">Area:</span>
-                <span class="font-medium">{{ property.area }} m²</span>
+                <span class="text-tertiary">Площадь:</span>
+                <span class="font-medium">{{ property.area }} м²</span>
               </div>
               <div class="detail-item">
-                <span class="text-tertiary">Rooms:</span>
-                <span class="font-medium">{{ property.rooms_count || 'N/A' }}</span>
+                <span class="text-tertiary">Комнат:</span>
+                <span class="font-medium">{{ property.rooms_count || 'Н/Д' }}</span>
               </div>
               <div class="detail-item">
-                <span class="text-tertiary">Floor:</span>
-                <span class="font-medium">{{ property.floor || 'N/A' }}</span>
+                <span class="text-tertiary">Этаж:</span>
+                <span class="font-medium">{{ property.floor || 'Н/Д' }}</span>
               </div>
             </div>
 
             <div class="property-footer">
               <div class="property-price">
-                <span class="text-tertiary">Price:</span>
+                <span class="text-tertiary">Цена:</span>
                 <span class="text-2xl font-bold text-primary">
-                  ₽{{ formatMoney(property.monthly_rent) }}/mo
+                  ₽{{ formatMoney(property.monthly_rent) }}/мес
                 </span>
               </div>
               <router-link :to="`/properties/${property.id}`">
-                <BaseButton variant="primary">View Details</BaseButton>
+                <BaseButton variant="primary">Подробнее</BaseButton>
               </router-link>
             </div>
           </BaseCard>

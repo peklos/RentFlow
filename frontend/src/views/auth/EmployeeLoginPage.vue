@@ -3,23 +3,23 @@
     <div class="auth-container">
       <BaseCard elevated>
         <div class="auth-header">
-          <h1 class="auth-title">Employee Login</h1>
-          <p class="text-secondary">Sign in to admin panel</p>
+          <h1 class="auth-title">Вход для сотрудников</h1>
+          <p class="text-secondary">Войдите в панель администратора</p>
         </div>
 
         <form @submit.prevent="handleLogin" class="auth-form">
           <BaseInput
             v-model="form.login"
-            label="Login"
-            placeholder="Enter your login"
+            label="Логин"
+            placeholder="Введите логин"
             required
           />
 
           <BaseInput
             v-model="form.password"
-            label="Password"
+            label="Пароль"
             type="password"
-            placeholder="Enter your password"
+            placeholder="Введите пароль"
             required
           />
 
@@ -30,7 +30,7 @@
             :loading="loading"
             class="w-full"
           >
-            Sign In
+            Войти
           </BaseButton>
         </form>
       </BaseCard>
@@ -58,7 +58,7 @@ const handleLogin = async () => {
     await authStore.employeeLogin(form.value)
     router.push('/admin/dashboard')
   } catch (error) {
-    alert('Login failed')
+    alert('Ошибка входа')
   } finally {
     loading.value = false
   }
