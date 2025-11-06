@@ -50,6 +50,24 @@ const routes = [
     component: () => import('@/views/client/ContractsPage.vue'),
     meta: { requiresAuth: true, role: 'client' }
   },
+  {
+    path: '/client/payments',
+    name: 'ClientPayments',
+    component: () => import('@/views/client/PaymentsPage.vue'),
+    meta: { requiresAuth: true, role: 'client' }
+  },
+  {
+    path: '/client/reviews',
+    name: 'ClientReviews',
+    component: () => import('@/views/client/ReviewsPage.vue'),
+    meta: { requiresAuth: true, role: 'client' }
+  },
+  {
+    path: '/client/services',
+    name: 'ClientServices',
+    component: () => import('@/views/client/ServicesPage.vue'),
+    meta: { requiresAuth: true, role: 'client' }
+  },
 
   // Employee login
   {
@@ -85,6 +103,48 @@ const routes = [
     path: '/admin/clients',
     name: 'AdminClients',
     component: () => import('@/views/admin/ClientsManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/payments',
+    name: 'AdminPayments',
+    component: () => import('@/views/admin/PaymentsManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/reviews',
+    name: 'AdminReviews',
+    component: () => import('@/views/admin/ReviewsManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/companies',
+    name: 'AdminCompanies',
+    component: () => import('@/views/admin/CompaniesManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/positions',
+    name: 'AdminPositions',
+    component: () => import('@/views/admin/PositionsManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/employees',
+    name: 'AdminEmployees',
+    component: () => import('@/views/admin/EmployeesManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/services',
+    name: 'AdminServices',
+    component: () => import('@/views/admin/ServicesManagePage.vue'),
+    meta: { requiresAuth: true, role: 'employee' }
+  },
+  {
+    path: '/admin/verifications',
+    name: 'AdminVerifications',
+    component: () => import('@/views/admin/VerificationsManagePage.vue'),
     meta: { requiresAuth: true, role: 'employee' }
   }
 ]
