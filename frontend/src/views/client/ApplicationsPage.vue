@@ -4,8 +4,8 @@
     <div class="applications-page">
       <div class="container">
         <div class="page-header">
-          <h1>My Applications</h1>
-          <p class="subtitle">Track the status of your rental applications</p>
+          <h1>Мои Заявки</h1>
+          <p class="subtitle">Отслеживайте статус ваших заявок на аренду</p>
         </div>
 
         <!-- Summary Stats -->
@@ -14,21 +14,21 @@
             <div class="stat-icon">⏳</div>
             <div class="stat-content">
               <div class="stat-value">{{ stats.pending }}</div>
-              <div class="stat-label">Pending</div>
+              <div class="stat-label">В ожидании</div>
             </div>
           </div>
           <div class="stat-box approved">
             <div class="stat-icon">✓</div>
             <div class="stat-content">
               <div class="stat-value">{{ stats.approved }}</div>
-              <div class="stat-label">Approved</div>
+              <div class="stat-label">Одобрено</div>
             </div>
           </div>
           <div class="stat-box rejected">
             <div class="stat-icon">✗</div>
             <div class="stat-content">
               <div class="stat-value">{{ stats.rejected }}</div>
-              <div class="stat-label">Rejected</div>
+              <div class="stat-label">Отклонено</div>
             </div>
           </div>
         </div>
@@ -36,14 +36,14 @@
         <!-- Loading State -->
         <div v-if="loading" class="loading-state">
           <div class="spinner"></div>
-          <p>Loading your applications...</p>
+          <p>Загрузка заявок...</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="error-state">
           <BaseCard elevated>
             <p class="error-message">{{ error }}</p>
-            <BaseButton @click="loadApplications" variant="primary">Retry</BaseButton>
+            <BaseButton @click="loadApplications" variant="primary">Повторить</BaseButton>
           </BaseCard>
         </div>
 
@@ -53,9 +53,9 @@
             <!-- Application Header -->
             <div class="application-header">
               <div class="application-number">
-                <h3>Application #{{ application.id }}</h3>
+                <h3>Заявка №{{ application.id }}</h3>
                 <span class="application-date">
-                  Submitted {{ formatDate(application.application_date) }}
+                  Подана {{ formatDate(application.application_date) }}
                 </span>
               </div>
               <span :class="['status-badge', application.status]">
@@ -67,36 +67,36 @@
             <div class="property-info">
               <div class="property-icon">🏢</div>
               <div class="property-details">
-                <h4>Property Details</h4>
-                <p class="property-id">Property ID: #{{ application.property_id }}</p>
+                <h4>Детали объекта</h4>
+                <p class="property-id">ID объекта: #{{ application.property_id }}</p>
               </div>
             </div>
 
             <!-- Application Details -->
             <div class="application-details">
               <div class="detail-item">
-                <span class="detail-label">Move-in Date</span>
+                <span class="detail-label">Дата заселения</span>
                 <span class="detail-value">{{ formatDate(application.preferred_move_in_date) }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Lease Duration</span>
-                <span class="detail-value">{{ application.lease_duration_months }} months</span>
+                <span class="detail-label">Срок аренды</span>
+                <span class="detail-value">{{ application.lease_duration_months }} мес</span>
               </div>
               <div v-if="application.notes" class="detail-item full-width">
-                <span class="detail-label">Additional Notes</span>
+                <span class="detail-label">Дополнительные заметки</span>
                 <span class="detail-value">{{ application.notes }}</span>
               </div>
             </div>
 
             <!-- Status Message -->
             <div v-if="application.status === 'pending'" class="status-message pending">
-              <p>⏳ Your application is being reviewed. We'll notify you once it's processed.</p>
+              <p>⏳ Ваша заявка рассматривается. Мы уведомим вас, когда она будет обработана.</p>
             </div>
             <div v-else-if="application.status === 'approved'" class="status-message approved">
-              <p>✓ Congratulations! Your application has been approved. Our team will contact you shortly.</p>
+              <p>✓ Поздравляем! Ваша заявка одобрена. Наша команда свяжется с вами в ближайшее время.</p>
             </div>
             <div v-else-if="application.status === 'rejected'" class="status-message rejected">
-              <p>✗ Unfortunately, this application was not approved. You can apply for other properties.</p>
+              <p>✗ К сожалению, эта заявка не была одобрена. Вы можете подать заявку на другие объекты.</p>
             </div>
           </BaseCard>
         </div>
@@ -106,10 +106,10 @@
           <BaseCard elevated>
             <div class="empty-content">
               <div class="empty-icon">📝</div>
-              <h3>No Applications Yet</h3>
-              <p>You haven't submitted any rental applications yet. Browse our available properties and apply for one!</p>
+              <h3>Пока нет заявок</h3>
+              <p>Вы еще не подали ни одной заявки на аренду. Просмотрите доступные объекты и подайте заявку!</p>
               <BaseButton variant="primary" @click="goToProperties">
-                Browse Properties
+                Смотреть объекты
               </BaseButton>
             </div>
           </BaseCard>
@@ -164,17 +164,17 @@ const loadApplications = async () => {
 
 const getStatusText = (status) => {
   const statusMap = {
-    pending: 'Pending Review',
-    approved: 'Approved',
-    rejected: 'Rejected'
+    pending: 'На рассмотрении',
+    approved: 'Одобрено',
+    rejected: 'Отклонено'
   }
   return statusMap[status] || status
 }
 
 const formatDate = (dateString) => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return 'Н/Д'
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'

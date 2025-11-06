@@ -1,8 +1,8 @@
 <template>
   <div class="applications-manage">
     <div class="page-header">
-      <h1>Applications Management</h1>
-      <p class="subtitle">Review and manage rental applications</p>
+      <h1>Управление заявками</h1>
+      <p class="subtitle">Просмотр и управление заявками на аренду</p>
     </div>
 
     <!-- Filters -->
@@ -10,18 +10,18 @@
       <BaseCard>
         <div class="filters">
           <div class="filter-group">
-            <label>Status Filter</label>
+            <label>Фильтр по статусу</label>
             <select v-model="filters.status" @change="loadApplications" class="filter-select">
-              <option value="">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
+              <option value="">Все статусы</option>
+              <option value="pending">В ожидании</option>
+              <option value="approved">Одобрено</option>
+              <option value="rejected">Отклонено</option>
             </select>
           </div>
           <div class="filter-stats">
-            <span class="stat-badge pending">Pending: {{ stats.pending }}</span>
-            <span class="stat-badge approved">Approved: {{ stats.approved }}</span>
-            <span class="stat-badge rejected">Rejected: {{ stats.rejected }}</span>
+            <span class="stat-badge pending">В ожидании: {{ stats.pending }}</span>
+            <span class="stat-badge approved">Одобрено: {{ stats.approved }}</span>
+            <span class="stat-badge rejected">Отклонено: {{ stats.rejected }}</span>
           </div>
         </div>
       </BaseCard>
@@ -30,13 +30,13 @@
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading applications...</p>
+      <p>Загрузка заявок...</p>
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="error-state">
       <p>{{ error }}</p>
-      <BaseButton @click="loadApplications">Retry</BaseButton>
+      <BaseButton @click="loadApplications">Повторить</BaseButton>
     </div>
 
     <!-- Applications List -->

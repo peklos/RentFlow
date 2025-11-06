@@ -6,14 +6,14 @@
           <router-link to="/" class="logo">
             <span class="text-3xl font-bold text-gradient">RentFlow</span>
           </router-link>
-          <h1 class="auth-title">Create Account</h1>
-          <p class="text-secondary">Join RentFlow today</p>
+          <h1 class="auth-title">Создать аккаунт</h1>
+          <p class="text-secondary">Присоединяйтесь к RentFlow</p>
         </div>
 
         <form @submit.prevent="handleRegister" class="auth-form">
           <BaseInput
             v-model="form.phone"
-            label="Phone Number"
+            label="Номер телефона"
             type="tel"
             placeholder="+7 (999) 123-45-67"
             :error="errors.phone"
@@ -22,7 +22,7 @@
 
           <BaseInput
             v-model="form.email"
-            label="Email (Optional)"
+            label="Email (необязательно)"
             type="email"
             placeholder="your@email.com"
             :error="errors.email"
@@ -30,9 +30,9 @@
 
           <BaseInput
             v-model="form.password"
-            label="Password"
+            label="Пароль"
             type="password"
-            placeholder="Minimum 6 characters"
+            placeholder="Минимум 6 символов"
             :error="errors.password"
             required
           />
@@ -52,15 +52,15 @@
             :loading="loading"
             class="w-full"
           >
-            Sign Up
+            Регистрация
           </BaseButton>
         </form>
 
         <div class="auth-footer">
           <p class="text-secondary">
-            Already have an account?
+            Уже есть аккаунт?
             <router-link to="/client/login" class="text-primary font-medium">
-              Sign In
+              Войти
             </router-link>
           </p>
         </div>
@@ -103,11 +103,11 @@ const handleRegister = async () => {
 
   // Validation
   if (!form.value.phone) {
-    errors.value.phone = 'Phone number is required'
+    errors.value.phone = 'Введите номер телефона'
     return
   }
   if (!form.value.password || form.value.password.length < 6) {
-    errors.value.password = 'Password must be at least 6 characters'
+    errors.value.password = 'Пароль должен содержать минимум 6 символов'
     return
   }
 
@@ -118,12 +118,12 @@ const handleRegister = async () => {
       email: form.value.email || null,
       password: form.value.password
     })
-    success.value = 'Registration successful! Verification code sent to your phone.'
+    success.value = 'Регистрация успешна! Код подтверждения отправлен на ваш телефон.'
     setTimeout(() => {
       router.push('/client/login')
     }, 2000)
   } catch (error) {
-    errors.value.general = error.response?.data?.detail || 'Registration failed. Please try again.'
+    errors.value.general = error.response?.data?.detail || 'Ошибка регистрации. Попробуйте снова.'
   } finally {
     loading.value = false
   }

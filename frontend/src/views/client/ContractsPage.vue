@@ -4,21 +4,21 @@
     <div class="contracts-page">
       <div class="container">
         <div class="page-header">
-          <h1>My Contracts</h1>
-          <p class="subtitle">View your rental contracts and payment history</p>
+          <h1>Мои Договоры</h1>
+          <p class="subtitle">Просмотр договоров аренды и истории платежей</p>
         </div>
 
         <!-- Loading State -->
         <div v-if="loading" class="loading-state">
           <div class="spinner"></div>
-          <p>Loading your contracts...</p>
+          <p>Загрузка договоров...</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="error-state">
           <BaseCard elevated>
             <p class="error-message">{{ error }}</p>
-            <BaseButton @click="loadContracts" variant="primary">Retry</BaseButton>
+            <BaseButton @click="loadContracts" variant="primary">Повторить</BaseButton>
           </BaseCard>
         </div>
 
@@ -28,7 +28,7 @@
             <!-- Contract Header -->
             <div class="contract-header">
               <div class="contract-info">
-                <h3>Contract #{{ contract.id }}</h3>
+                <h3>Договор №{{ contract.id }}</h3>
                 <p class="contract-dates">
                   {{ formatDate(contract.start_date) }} - {{ formatDate(contract.end_date) }}
                 </p>
@@ -42,27 +42,27 @@
             <div class="property-section">
               <div class="section-title">
                 <span class="icon">🏢</span>
-                <h4>Property Details</h4>
+                <h4>Детали объекта</h4>
               </div>
-              <div class="property-id">Property ID: #{{ contract.property_id }}</div>
+              <div class="property-id">ID объекта: #{{ contract.property_id }}</div>
             </div>
 
             <!-- Contract Details -->
             <div class="contract-details">
               <div class="detail-item">
-                <span class="detail-label">Monthly Rent</span>
+                <span class="detail-label">Ежемесячная плата</span>
                 <span class="detail-value price">{{ formatPrice(contract.monthly_rent) }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Security Deposit</span>
+                <span class="detail-label">Залог</span>
                 <span class="detail-value price">{{ formatPrice(contract.security_deposit) }}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Payment Day</span>
-                <span class="detail-value">Day {{ contract.payment_day }} of each month</span>
+                <span class="detail-label">День платежа</span>
+                <span class="detail-value">{{ contract.payment_day }} числа каждого месяца</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Contract Duration</span>
+                <span class="detail-label">Срок договора</span>
                 <span class="detail-value">{{ calculateDuration(contract.start_date, contract.end_date) }}</span>
               </div>
             </div>
@@ -71,24 +71,24 @@
             <div v-if="contract.status === 'active'" class="payment-reminder">
               <div class="reminder-icon">💳</div>
               <div class="reminder-content">
-                <h5>Next Payment Due</h5>
+                <h5>Следующий платеж</h5>
                 <p>{{ getNextPaymentDate(contract.payment_day) }}</p>
               </div>
             </div>
 
             <!-- Special Conditions -->
             <div v-if="contract.special_conditions" class="special-conditions">
-              <h5>Special Conditions</h5>
+              <h5>Особые условия</h5>
               <p>{{ contract.special_conditions }}</p>
             </div>
 
             <!-- Actions -->
             <div class="contract-actions">
               <BaseButton variant="secondary" size="small" @click="viewContractDetails(contract.id)">
-                View Full Contract
+                Полный договор
               </BaseButton>
               <BaseButton v-if="contract.status === 'active'" variant="primary" size="small">
-                Make Payment
+                Оплатить
               </BaseButton>
             </div>
           </BaseCard>
@@ -99,10 +99,10 @@
           <BaseCard elevated>
             <div class="empty-content">
               <div class="empty-icon">📄</div>
-              <h3>No Contracts Yet</h3>
-              <p>You don't have any rental contracts yet. Once your application is approved and a contract is created, it will appear here.</p>
+              <h3>Пока нет договоров</h3>
+              <p>У вас пока нет договоров аренды. Когда ваша заявка будет одобрена и договор создан, он появится здесь.</p>
               <BaseButton variant="primary" @click="goToApplications">
-                View My Applications
+                Мои заявки
               </BaseButton>
             </div>
           </BaseCard>
@@ -149,17 +149,17 @@ const loadContracts = async () => {
 
 const getStatusText = (status) => {
   const statusMap = {
-    active: 'Active',
-    completed: 'Completed',
-    terminated: 'Terminated'
+    active: 'Активен',
+    completed: 'Завершен',
+    terminated: 'Расторгнут'
   }
   return statusMap[status] || status
 }
 
 const formatDate = (dateString) => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return 'Н/Д'
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -178,7 +178,7 @@ const calculateDuration = (startDate, endDate) => {
   const start = new Date(startDate)
   const end = new Date(endDate)
   const months = Math.round((end - start) / (1000 * 60 * 60 * 24 * 30))
-  return `${months} months`
+  return `${months} мес`
 }
 
 const getNextPaymentDate = (paymentDay) => {

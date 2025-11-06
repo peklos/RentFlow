@@ -2,8 +2,8 @@
   <div class="dashboard-page">
     <div class="app-header">
       <div class="container flex items-center justify-between" style="height: 100%;">
-        <h1 class="text-2xl font-bold">Admin Dashboard</h1>
-        <BaseButton variant="ghost" @click="handleLogout">Logout</BaseButton>
+        <h1 class="text-2xl font-bold">Панель Администратора</h1>
+        <BaseButton variant="ghost" @click="handleLogout">Выйти</BaseButton>
       </div>
     </div>
 
@@ -11,22 +11,22 @@
       <aside class="app-sidebar">
         <nav class="sidebar-nav">
           <router-link to="/admin/dashboard" class="sidebar-link active">
-            📊 Dashboard
+            📊 Панель
           </router-link>
           <router-link to="/admin/properties" class="sidebar-link">
-            🏢 Properties
+            🏢 Объекты
           </router-link>
           <router-link to="/admin/applications" class="sidebar-link">
-            📝 Applications
+            📝 Заявки
           </router-link>
           <router-link to="/admin/clients" class="sidebar-link">
-            👥 Clients
+            👥 Клиенты
           </router-link>
         </nav>
       </aside>
 
       <main class="app-content">
-        <h2 class="text-3xl font-bold mb-xl">Overview</h2>
+        <h2 class="text-3xl font-bold mb-xl">Обзор</h2>
 
         <!-- Statistics Cards -->
         <div class="grid grid-cols-4 gap-lg mb-2xl">
@@ -34,10 +34,10 @@
             <div class="stat-card">
               <div class="stat-icon bg-primary">🏠</div>
               <div class="stat-content">
-                <p class="stat-label">Total Properties</p>
+                <p class="stat-label">Всего объектов</p>
                 <p class="stat-value">{{ stats?.properties?.total || 0 }}</p>
                 <p class="stat-subtext text-success">
-                  {{ stats?.properties?.available || 0 }} available
+                  {{ stats?.properties?.available || 0 }} доступно
                 </p>
               </div>
             </div>
@@ -47,10 +47,10 @@
             <div class="stat-card">
               <div class="stat-icon bg-secondary">👥</div>
               <div class="stat-content">
-                <p class="stat-label">Total Clients</p>
+                <p class="stat-label">Всего клиентов</p>
                 <p class="stat-value">{{ stats?.clients?.total || 0 }}</p>
                 <p class="stat-subtext text-info">
-                  {{ stats?.clients?.verified || 0 }} verified
+                  {{ stats?.clients?.verified || 0 }} подтверждено
                 </p>
               </div>
             </div>
@@ -60,10 +60,10 @@
             <div class="stat-card">
               <div class="stat-icon bg-success">📄</div>
               <div class="stat-content">
-                <p class="stat-label">Active Contracts</p>
+                <p class="stat-label">Активные договоры</p>
                 <p class="stat-value">{{ stats?.contracts?.active || 0 }}</p>
                 <p class="stat-subtext text-tertiary">
-                  {{ stats?.contracts?.total || 0 }} total
+                  {{ stats?.contracts?.total || 0 }} всего
                 </p>
               </div>
             </div>
@@ -73,31 +73,31 @@
             <div class="stat-card">
               <div class="stat-icon bg-warning">💰</div>
               <div class="stat-content">
-                <p class="stat-label">Total Revenue</p>
+                <p class="stat-label">Общий доход</p>
                 <p class="stat-value">₽{{ formatMoney(stats?.revenue?.total || 0) }}</p>
-                <p class="stat-subtext text-success">This month</p>
+                <p class="stat-subtext text-success">За месяц</p>
               </div>
             </div>
           </BaseCard>
         </div>
 
         <!-- Recent Activity -->
-        <BaseCard title="Recent Activity" class="mb-xl">
+        <BaseCard title="Недавняя активность" class="mb-xl">
           <div class="activity-list">
             <div class="activity-item">
-              <span class="badge badge-primary">New</span>
-              <p class="text-secondary">New application from Client #123</p>
-              <span class="text-tertiary text-sm">2 hours ago</span>
+              <span class="badge badge-primary">Новое</span>
+              <p class="text-secondary">Новая заявка от клиента №123</p>
+              <span class="text-tertiary text-sm">2 ч назад</span>
             </div>
             <div class="activity-item">
-              <span class="badge badge-success">Approved</span>
-              <p class="text-secondary">Contract #456 has been signed</p>
-              <span class="text-tertiary text-sm">5 hours ago</span>
+              <span class="badge badge-success">Одобрено</span>
+              <p class="text-secondary">Договор №456 подписан</p>
+              <span class="text-tertiary text-sm">5 ч назад</span>
             </div>
             <div class="activity-item">
-              <span class="badge badge-warning">Pending</span>
-              <p class="text-secondary">Payment #789 awaiting confirmation</p>
-              <span class="text-tertiary text-sm">1 day ago</span>
+              <span class="badge badge-warning">Ожидание</span>
+              <p class="text-secondary">Платеж №789 ожидает подтверждения</p>
+              <span class="text-tertiary text-sm">1 д назад</span>
             </div>
           </div>
         </BaseCard>

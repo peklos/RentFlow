@@ -2,8 +2,8 @@
   <div>
     <AppHeader />
     <div class="container" style="padding: 2rem 0;">
-      <BaseCard elevated title="My Profile">
-        <p class="text-secondary">Profile page - Coming soon</p>
+      <BaseCard elevated title="Мой Профиль">
+        <p class="text-secondary">Страница профиля - Скоро</p>
       </BaseCard>
     </div>
   </div>

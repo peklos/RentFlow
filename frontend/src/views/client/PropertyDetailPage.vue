@@ -2,8 +2,8 @@
   <div>
     <AppHeader />
     <div class="container" style="padding: 2rem 0;">
-      <BaseCard elevated title="Property Details">
-        <p class="text-secondary">Property detail page - Coming soon</p>
+      <BaseCard elevated title="Детали объекта">
+        <p class="text-secondary">Страница деталей - Скоро</p>
       </BaseCard>
     </div>
   </div>
