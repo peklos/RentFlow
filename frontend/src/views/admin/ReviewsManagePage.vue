@@ -8,11 +8,11 @@
         </div>
       </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-    </div>
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+      </div>
 
-    <div v-else class="reviews-list">
+      <div v-else class="reviews-list">
       <div v-for="review in reviews" :key="review.id" class="review-card">
         <div class="review-header">
           <div class="rating">
@@ -30,6 +30,7 @@
           <BaseButton v-if="!review.is_approved" variant="primary" size="small" @click="approveReview(review.id)">Одобрить</BaseButton>
           <BaseButton variant="danger" size="small" @click="deleteReview(review.id)">Удалить</BaseButton>
         </div>
+      </div>
       </div>
     </div>
   </AdminLayout>
