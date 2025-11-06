@@ -21,15 +21,15 @@ async def get_properties(
     is_furnished: Optional[bool] = None,
     status: str = "available",
     skip: int = Query(0, ge=0),
-    limit: int = Query(10, le=100),
+    limit: int = Query(100, le=1000),
     db: Session = Depends(get_db)
 ):
     """Get list of properties with filters"""
     query = db.query(Property)
 
-    # Apply filters
+    # Apply filters - filter by subtype instead of type
     if type:
-        query = query.filter(Property.type == type)
+        query = query.filter(Property.subtype == type)
     if min_price is not None:
         query = query.filter(Property.monthly_rent >= min_price)
     if max_price is not None:

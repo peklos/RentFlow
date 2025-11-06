@@ -76,7 +76,7 @@ def create_initial_data(db: Session):
         # Residential properties
         Property(
             type="residential",
-            subtype="Apartment",
+            subtype="Квартира",
             address="Moscow, Arbat Street, 15, apt 42",
             area=Decimal("75.5"),
             rooms_count=2,
@@ -94,7 +94,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="residential",
-            subtype="Apartment",
+            subtype="Пентхаус",
             address="Moscow, Leninsky Prospekt, 45, apt 120",
             area=Decimal("120.0"),
             rooms_count=3,
@@ -112,7 +112,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="residential",
-            subtype="Studio",
+            subtype="Студия",
             address="Moscow, Baumanskaya Street, 23, apt 5",
             area=Decimal("35.0"),
             rooms_count=1,
@@ -130,7 +130,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="residential",
-            subtype="Apartment",
+            subtype="Таунхаус",
             address="Moscow, Kutuzovsky Prospekt, 12, apt 78",
             area=Decimal("95.0"),
             rooms_count=2,
@@ -149,7 +149,7 @@ def create_initial_data(db: Session):
         # Commercial properties
         Property(
             type="commercial",
-            subtype="Office",
+            subtype="Офис",
             address="Moscow, Business Center Tower, 5th floor",
             area=Decimal("200.0"),
             floor=5,
@@ -166,7 +166,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="commercial",
-            subtype="Retail",
+            subtype="Торговое помещение",
             address="Moscow, Shopping Center Mega, Ground floor",
             area=Decimal("80.0"),
             floor=1,
@@ -183,7 +183,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="residential",
-            subtype="Apartment",
+            subtype="Квартира",
             address="Moscow, Prospekt Mira, 88, apt 202",
             area=Decimal("60.0"),
             rooms_count=2,
@@ -201,7 +201,7 @@ def create_initial_data(db: Session):
         ),
         Property(
             type="residential",
-            subtype="Penthouse",
+            subtype="Коттедж",
             address="Moscow, Moskva City, Tower Federation, apt 501",
             area=Decimal("250.0"),
             rooms_count=4,

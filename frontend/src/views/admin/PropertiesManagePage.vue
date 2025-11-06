@@ -121,7 +121,17 @@
 
             <div class="form-group">
               <label>Subtype *</label>
-              <input v-model="propertyForm.subtype" required placeholder="e.g., Apartment, Office" />
+              <select v-model="propertyForm.subtype" required>
+                <option value="">Выберите подтип</option>
+                <option value="Квартира">Квартира</option>
+                <option value="Студия">Студия</option>
+                <option value="Пентхаус">Пентхаус</option>
+                <option value="Таунхаус">Таунхаус</option>
+                <option value="Коттедж">Коттедж</option>
+                <option value="Офис">Офис</option>
+                <option value="Торговое помещение">Торговое помещение</option>
+                <option value="Склад">Склад</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -643,6 +653,17 @@ onMounted(() => {
 
 .form-actions button {
   flex: 1;
+}
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 /* Responsive */
