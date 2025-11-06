@@ -4,14 +4,12 @@ from sqlalchemy import func
 
 from db.database import get_db
 from db.models import Property, Client, Contract, Payment, Application
-from utils.security import require_role
 
 router = APIRouter()
 
 
 @router.get("/dashboard")
 async def get_dashboard_statistics(
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get dashboard statistics (admin)"""

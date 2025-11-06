@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import AdditionalService
 from schemas.service import ServiceCreate, ServiceUpdate, ServiceResponse
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ router = APIRouter()
 @router.post("/", response_model=ServiceResponse, status_code=201)
 async def create_service(
     service_data: ServiceCreate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Create a new additional service (admin)"""
@@ -27,7 +25,6 @@ async def create_service(
 
 @router.get("/", response_model=List[ServiceResponse])
 async def get_all_services(
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all services (admin)"""
@@ -39,7 +36,6 @@ async def get_all_services(
 async def update_service(
     service_id: int,
     service_data: ServiceUpdate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Update service (admin)"""

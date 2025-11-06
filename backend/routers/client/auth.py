@@ -6,7 +6,6 @@ from db.database import get_db
 from db.models import UserClient, Client
 from schemas.user import UserRegister, UserLogin, UserResponse, VerifyPhone
 from schemas.client import ClientCreate
-from utils.security import get_password_hash, verify_password
 from utils.validators import validate_phone, normalize_phone
 from utils.notifications import send_verification_code
 
@@ -31,11 +30,11 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
     # Generate verification code
     verification_code = str(random.randint(100000, 999999))
 
-    # Create user
+    # Create user (plain password for educational purposes)
     new_user = UserClient(
         phone=normalized_phone,
         email=user_data.email,
-        password_hash=get_password_hash(user_data.password),
+        password_hash=user_data.password,  # Plain text password
         verification_code=verification_code,
         is_verified=True  # Auto-verify for simplicity
     )
@@ -66,7 +65,7 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
     normalized_phone = normalize_phone(credentials.phone)
 
     user = db.query(UserClient).filter(UserClient.phone == normalized_phone).first()
-    if not user or not verify_password(credentials.password, user.password_hash):
+    if not user or credentials.password != user.password_hash:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect phone or password"

@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Client
 from schemas.client import ClientResponse
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -14,7 +13,6 @@ router = APIRouter()
 async def get_all_clients(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, le=100),
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all clients (admin)"""
@@ -25,7 +23,6 @@ async def get_all_clients(
 @router.get("/{client_id}", response_model=ClientResponse)
 async def get_client(
     client_id: int,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get client by ID (admin)"""

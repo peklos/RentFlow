@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Company
 from schemas.company import CompanyCreate, CompanyResponse
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ router = APIRouter()
 @router.post("/", response_model=CompanyResponse, status_code=201)
 async def create_company(
     company_data: CompanyCreate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Create a new company (admin)"""
@@ -27,7 +25,6 @@ async def create_company(
 
 @router.get("/", response_model=List[CompanyResponse])
 async def get_all_companies(
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all companies (admin)"""

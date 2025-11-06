@@ -4,17 +4,16 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.models import Employee
 from schemas.employee import EmployeeLogin
-from utils.security import verify_password
 
 router = APIRouter()
 
 
 @router.post("/login")
 async def employee_login(credentials: EmployeeLogin, db: Session = Depends(get_db)):
-    """Login for employees (authentication removed)"""
+    """Login for employees (plain password for educational purposes)"""
     employee = db.query(Employee).filter(Employee.login == credentials.login).first()
 
-    if not employee or not verify_password(credentials.password, employee.password_hash):
+    if not employee or credentials.password != employee.password_hash:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect login or password"

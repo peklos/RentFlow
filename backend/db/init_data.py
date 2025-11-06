@@ -3,7 +3,6 @@ from db.models import (
     Position, Employee, Company, Property, Client, UserClient,
     Application, Contract, Payment, AdditionalService, Review
 )
-from utils.security import get_password_hash
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
@@ -28,11 +27,11 @@ def create_initial_data(db: Session):
     db.commit()
     print("✓ Positions created")
 
-    # 2. Create Employees
+    # 2. Create Employees (plain passwords for educational purposes)
     employees = [
         Employee(
             login="admin",
-            password_hash=get_password_hash("admin123"),
+            password_hash="admin123",  # Plain text password
             full_name="Admin User",
             position_id=1,
             phone="+79991111111",
@@ -42,7 +41,7 @@ def create_initial_data(db: Session):
         ),
         Employee(
             login="manager1",
-            password_hash=get_password_hash("manager123"),
+            password_hash="manager123",  # Plain text password
             full_name="Ivan Petrov",
             position_id=2,
             phone="+79992222222",
@@ -223,26 +222,26 @@ def create_initial_data(db: Session):
     db.commit()
     print("✓ Properties created")
 
-    # 5. Create User Clients
+    # 5. Create User Clients (plain passwords for educational purposes)
     user_clients = [
         UserClient(
             phone="+79998887766",
             email="alex@example.com",
-            password_hash=get_password_hash("client123"),
+            password_hash="client123",  # Plain text password
             is_active=True,
             is_verified=True
         ),
         UserClient(
             phone="+79997776655",
             email="maria@example.com",
-            password_hash=get_password_hash("client123"),
+            password_hash="client123",  # Plain text password
             is_active=True,
             is_verified=True
         ),
         UserClient(
             phone="+79996665544",
             email="dmitry@example.com",
-            password_hash=get_password_hash("client123"),
+            password_hash="client123",  # Plain text password
             is_active=True,
             is_verified=True
         ),
