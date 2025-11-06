@@ -107,6 +107,115 @@
             </div>
           </BaseCard>
         </div>
+
+        <!-- Full Contract Modal -->
+        <div v-if="showContractModal" class="modal-overlay" @click.self="closeContractModal">
+          <div class="modal-large">
+            <div class="modal-header">
+              <h2>Договор аренды №{{ selectedContract?.contract_number || selectedContract?.id }}</h2>
+              <button class="close-btn" @click="closeContractModal">×</button>
+            </div>
+            <div class="modal-body" v-if="selectedContract">
+              <div class="contract-document">
+                <div class="document-header">
+                  <h3>ДОГОВОР АРЕНДЫ НЕДВИЖИМОСТИ</h3>
+                  <p class="document-number">№{{ selectedContract.contract_number || selectedContract.id }}</p>
+                  <p class="document-date">от {{ formatDate(selectedContract.signing_date) }}</p>
+                </div>
+
+                <div class="document-section">
+                  <h4>1. ПРЕДМЕТ ДОГОВОРА</h4>
+                  <p>Арендодатель обязуется предоставить Арендатору во временное владение и пользование объект недвижимости (Объект ID: #{{ selectedContract.property_id }}), а Арендатор обязуется принять Объект и своевременно уплачивать арендную плату.</p>
+                </div>
+
+                <div class="document-section">
+                  <h4>2. СРОК ДОГОВОРА</h4>
+                  <div class="info-grid">
+                    <div class="info-item">
+                      <span class="info-label">Дата начала:</span>
+                      <span class="info-value">{{ formatDate(selectedContract.start_date) }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Дата окончания:</span>
+                      <span class="info-value">{{ formatDate(selectedContract.end_date) }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Срок действия:</span>
+                      <span class="info-value">{{ calculateDuration(selectedContract.start_date, selectedContract.end_date) }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="document-section">
+                  <h4>3. АРЕНДНАЯ ПЛАТА</h4>
+                  <div class="info-grid">
+                    <div class="info-item">
+                      <span class="info-label">Размер арендной платы:</span>
+                      <span class="info-value price">{{ formatPrice(selectedContract.monthly_rent) }} / месяц</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">День платежа:</span>
+                      <span class="info-value">{{ selectedContract.payment_day }} число каждого месяца</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Способ оплаты:</span>
+                      <span class="info-value">{{ selectedContract.payment_method || 'Банковский перевод' }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="document-section">
+                  <h4>4. ОБЕСПЕЧИТЕЛЬНЫЙ ДЕПОЗИТ</h4>
+                  <div class="info-grid">
+                    <div class="info-item">
+                      <span class="info-label">Размер залога:</span>
+                      <span class="info-value price">{{ formatPrice(selectedContract.deposit_amount) }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Статус оплаты:</span>
+                      <span :class="['info-value', selectedContract.deposit_paid ? 'status-paid' : 'status-pending']">
+                        {{ selectedContract.deposit_paid ? '✓ Оплачен' : '⏳ Не оплачен' }}
+                      </span>
+                    </div>
+                  </div>
+                  <p class="section-note">Залог возвращается Арендатору в течение 14 дней после окончания срока аренды и передачи Объекта в надлежащем состоянии.</p>
+                </div>
+
+                <div class="document-section">
+                  <h4>5. ОСОБЫЕ УСЛОВИЯ</h4>
+                  <p v-if="selectedContract.special_conditions">{{ selectedContract.special_conditions }}</p>
+                  <p v-else class="text-secondary">Особых условий не установлено.</p>
+                </div>
+
+                <div class="document-section">
+                  <h4>6. СТАТУС ДОГОВОРА</h4>
+                  <div class="status-info">
+                    <span :class="['status-badge-large', selectedContract.status]">
+                      {{ getStatusText(selectedContract.status) }}
+                    </span>
+                    <p v-if="selectedContract.signed_electronically" class="signature-info">
+                      ✓ Подписан электронной подписью
+                    </p>
+                  </div>
+                </div>
+
+                <div class="document-footer">
+                  <p class="footer-note">Настоящий договор составлен в электронной форме и имеет юридическую силу.</p>
+                  <p class="footer-date">Дата формирования документа: {{ formatDate(new Date()) }}</p>
+                </div>
+              </div>
+
+              <div class="modal-actions">
+                <BaseButton variant="secondary" @click="printContract">
+                  🖨️ Печать
+                </BaseButton>
+                <BaseButton variant="primary" @click="closeContractModal">
+                  Закрыть
+                </BaseButton>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -127,6 +236,8 @@ const authStore = useAuthStore()
 const contracts = ref([])
 const loading = ref(true)
 const error = ref(null)
+const showContractModal = ref(false)
+const selectedContract = ref(null)
 
 const loadContracts = async () => {
   loading.value = true
@@ -196,8 +307,20 @@ const getNextPaymentDate = (paymentDay) => {
 }
 
 const viewContractDetails = (contractId) => {
-  console.log('View contract details:', contractId)
-  alert(`Contract details for ID: ${contractId}\n\nThis would open a detailed view with full contract terms, payment history, and documents.`)
+  const contract = contracts.value.find(c => c.id === contractId)
+  if (contract) {
+    selectedContract.value = contract
+    showContractModal.value = true
+  }
+}
+
+const closeContractModal = () => {
+  showContractModal.value = false
+  selectedContract.value = null
+}
+
+const printContract = () => {
+  window.print()
 }
 
 const goToApplications = () => {
@@ -521,6 +644,260 @@ onMounted(() => {
 
   .contract-actions button {
     width: 100%;
+  }
+}
+
+/* Contract Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-large {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  background: var(--bg-secondary);
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.contract-document {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.document-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.document-header h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.document-number {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin: 0.5rem 0;
+}
+
+.document-date {
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.document-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.document-section:last-of-type {
+  border-bottom: none;
+}
+
+.document-section h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.document-section p {
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-label {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.info-value.price {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.info-value.status-paid {
+  color: #22c55e;
+}
+
+.info-value.status-pending {
+  color: #facc15;
+}
+
+.section-note {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(59, 130, 246, 0.05);
+  border-left: 3px solid var(--primary-color);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.status-badge-large {
+  padding: 0.75rem 1.5rem;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge-large.active {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.status-badge-large.completed {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.status-badge-large.terminated {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.signature-info {
+  color: #22c55e;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.document-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.footer-note {
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.footer-date {
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+@media print {
+  .modal-header,
+  .modal-actions,
+  .close-btn {
+    display: none !important;
+  }
+
+  .modal-large {
+    max-width: 100%;
+    max-height: none;
+    overflow: visible;
+    border: none;
+  }
+
+  .contract-document {
+    background: white;
+    color: black;
   }
 }
 </style>
