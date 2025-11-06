@@ -145,7 +145,7 @@ import BaseCard from '@/components/common/BaseCard.vue'
 
 <style scoped>
 .hero-section {
-  padding: 4rem 0 6rem;
+  padding: 4rem 0 8rem;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   position: relative;
   overflow: hidden;
@@ -212,7 +212,7 @@ import BaseCard from '@/components/common/BaseCard.vue'
 }
 
 .features-section {
-  padding: 5rem 0;
+  padding: 6rem 0;
   background: var(--bg-primary);
 }
 

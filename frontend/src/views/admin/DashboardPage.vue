@@ -1,123 +1,92 @@
 <template>
-  <div class="dashboard-page">
-    <div class="app-header">
-      <div class="container flex items-center justify-between" style="height: 100%;">
-        <h1 class="text-2xl font-bold">Панель Администратора</h1>
-        <BaseButton variant="ghost" @click="handleLogout">Выйти</BaseButton>
-      </div>
-    </div>
+  <AdminLayout>
+    <div class="dashboard-content">
+      <h1 class="page-title">Обзор</h1>
 
-    <div class="app-main">
-      <aside class="app-sidebar">
-        <nav class="sidebar-nav">
-          <router-link to="/admin/dashboard" class="sidebar-link active">
-            📊 Панель
-          </router-link>
-          <router-link to="/admin/properties" class="sidebar-link">
-            🏢 Объекты
-          </router-link>
-          <router-link to="/admin/applications" class="sidebar-link">
-            📝 Заявки
-          </router-link>
-          <router-link to="/admin/clients" class="sidebar-link">
-            👥 Клиенты
-          </router-link>
-        </nav>
-      </aside>
-
-      <main class="app-content">
-        <h2 class="text-3xl font-bold mb-xl">Обзор</h2>
-
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-4 gap-lg mb-2xl">
-          <BaseCard elevated>
-            <div class="stat-card">
-              <div class="stat-icon bg-primary">🏠</div>
-              <div class="stat-content">
-                <p class="stat-label">Всего объектов</p>
-                <p class="stat-value">{{ stats?.properties?.total || 0 }}</p>
-                <p class="stat-subtext text-success">
-                  {{ stats?.properties?.available || 0 }} доступно
-                </p>
-              </div>
-            </div>
-          </BaseCard>
-
-          <BaseCard elevated>
-            <div class="stat-card">
-              <div class="stat-icon bg-secondary">👥</div>
-              <div class="stat-content">
-                <p class="stat-label">Всего клиентов</p>
-                <p class="stat-value">{{ stats?.clients?.total || 0 }}</p>
-                <p class="stat-subtext text-info">
-                  {{ stats?.clients?.verified || 0 }} подтверждено
-                </p>
-              </div>
-            </div>
-          </BaseCard>
-
-          <BaseCard elevated>
-            <div class="stat-card">
-              <div class="stat-icon bg-success">📄</div>
-              <div class="stat-content">
-                <p class="stat-label">Активные договоры</p>
-                <p class="stat-value">{{ stats?.contracts?.active || 0 }}</p>
-                <p class="stat-subtext text-tertiary">
-                  {{ stats?.contracts?.total || 0 }} всего
-                </p>
-              </div>
-            </div>
-          </BaseCard>
-
-          <BaseCard elevated>
-            <div class="stat-card">
-              <div class="stat-icon bg-warning">💰</div>
-              <div class="stat-content">
-                <p class="stat-label">Общий доход</p>
-                <p class="stat-value">₽{{ formatMoney(stats?.revenue?.total || 0) }}</p>
-                <p class="stat-subtext text-success">За месяц</p>
-              </div>
-            </div>
-          </BaseCard>
-        </div>
-
-        <!-- Recent Activity -->
-        <BaseCard title="Недавняя активность" class="mb-xl">
-          <div class="activity-list">
-            <div class="activity-item">
-              <span class="badge badge-primary">Новое</span>
-              <p class="text-secondary">Новая заявка от клиента №123</p>
-              <span class="text-tertiary text-sm">2 ч назад</span>
-            </div>
-            <div class="activity-item">
-              <span class="badge badge-success">Одобрено</span>
-              <p class="text-secondary">Договор №456 подписан</p>
-              <span class="text-tertiary text-sm">5 ч назад</span>
-            </div>
-            <div class="activity-item">
-              <span class="badge badge-warning">Ожидание</span>
-              <p class="text-secondary">Платеж №789 ожидает подтверждения</p>
-              <span class="text-tertiary text-sm">1 д назад</span>
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+        <BaseCard elevated>
+          <div class="stat-card">
+            <div class="stat-icon bg-primary">🏠</div>
+            <div class="stat-content">
+              <p class="stat-label">Всего объектов</p>
+              <p class="stat-value">{{ stats?.properties?.total || 0 }}</p>
+              <p class="stat-subtext text-success">
+                {{ stats?.properties?.available || 0 }} доступно
+              </p>
             </div>
           </div>
         </BaseCard>
-      </main>
+
+        <BaseCard elevated>
+          <div class="stat-card">
+            <div class="stat-icon bg-secondary">👥</div>
+            <div class="stat-content">
+              <p class="stat-label">Всего клиентов</p>
+              <p class="stat-value">{{ stats?.clients?.total || 0 }}</p>
+              <p class="stat-subtext text-info">
+                {{ stats?.clients?.verified || 0 }} подтверждено
+              </p>
+            </div>
+          </div>
+        </BaseCard>
+
+        <BaseCard elevated>
+          <div class="stat-card">
+            <div class="stat-icon bg-success">📄</div>
+            <div class="stat-content">
+              <p class="stat-label">Активные договоры</p>
+              <p class="stat-value">{{ stats?.contracts?.active || 0 }}</p>
+              <p class="stat-subtext text-tertiary">
+                {{ stats?.contracts?.total || 0 }} всего
+              </p>
+            </div>
+          </div>
+        </BaseCard>
+
+        <BaseCard elevated>
+          <div class="stat-card">
+            <div class="stat-icon bg-warning">💰</div>
+            <div class="stat-content">
+              <p class="stat-label">Общий доход</p>
+              <p class="stat-value">₽{{ formatMoney(stats?.revenue?.total || 0) }}</p>
+              <p class="stat-subtext text-success">За месяц</p>
+            </div>
+          </div>
+        </BaseCard>
+      </div>
+
+      <!-- Recent Activity -->
+      <BaseCard title="Недавняя активность" class="activity-card">
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="badge badge-primary">Новое</span>
+            <p class="text-secondary">Новая заявка от клиента №123</p>
+            <span class="text-tertiary text-sm">2 ч назад</span>
+          </div>
+          <div class="activity-item">
+            <span class="badge badge-success">Одобрено</span>
+            <p class="text-secondary">Договор №456 подписан</p>
+            <span class="text-tertiary text-sm">5 ч назад</span>
+          </div>
+          <div class="activity-item">
+            <span class="badge badge-warning">Ожидание</span>
+            <p class="text-secondary">Платеж №789 ожидает подтверждения</p>
+            <span class="text-tertiary text-sm">1 д назад</span>
+          </div>
+        </div>
+      </BaseCard>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 import { useAdminStore } from '@/stores/admin'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
-import BaseButton from '@/components/common/BaseButton.vue'
 
-const router = useRouter()
-const authStore = useAuthStore()
 const adminStore = useAdminStore()
-
 const stats = ref(null)
 
 onMounted(async () => {
@@ -128,53 +97,41 @@ onMounted(async () => {
   }
 })
 
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/')
-}
-
 const formatMoney = (value) => {
   return new Intl.NumberFormat('ru-RU').format(value)
 }
 </script>
 
 <style scoped>
-.dashboard-page {
-  min-height: 100vh;
-  background: var(--bg-primary);
+.dashboard-content {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.sidebar-nav {
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.sidebar-link {
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
-  font-weight: var(--font-weight-medium);
-}
-
-.sidebar-link:hover,
-.sidebar-link.active {
-  background: var(--bg-tertiary);
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
   color: var(--text-primary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .stat-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .stat-icon {
   width: 60px;
   height: 60px;
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,39 +159,93 @@ const formatMoney = (value) => {
 }
 
 .stat-label {
-  font-size: var(--font-size-sm);
+  font-size: 0.875rem;
   color: var(--text-tertiary);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 0.5rem;
 }
 
 .stat-value {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
+  font-size: 1.875rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 0.25rem;
 }
 
 .stat-subtext {
-  font-size: var(--font-size-sm);
+  font-size: 0.875rem;
+}
+
+.text-success {
+  color: #10b981;
+}
+
+.text-info {
+  color: #06b6d4;
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.activity-card {
+  margin-top: 2rem;
 }
 
 .activity-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .activity-item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: 1rem;
+  padding: 1rem;
   background: var(--bg-tertiary);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
 }
 
 .activity-item p {
   flex: 1;
   margin: 0;
+  color: var(--text-secondary);
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-primary {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
 }
 </style>

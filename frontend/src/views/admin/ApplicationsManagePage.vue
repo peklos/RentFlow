@@ -1,123 +1,126 @@
 <template>
-  <div class="applications-manage">
-    <div class="page-header">
-      <h1>Управление заявками</h1>
-      <p class="subtitle">Просмотр и управление заявками на аренду</p>
+  <AdminLayout>
+    <div class="applications-manage">
+      <div class="page-header">
+        <h1>Управление заявками</h1>
+        <p class="subtitle">Просмотр и управление заявками на аренду</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-section">
+        <BaseCard>
+          <div class="filters">
+            <div class="filter-group">
+              <label>Фильтр по статусу</label>
+              <select v-model="filters.status" @change="loadApplications" class="filter-select">
+                <option value="">Все статусы</option>
+                <option value="pending">В ожидании</option>
+                <option value="approved">Одобрено</option>
+                <option value="rejected">Отклонено</option>
+              </select>
+            </div>
+            <div class="filter-stats">
+              <span class="stat-badge pending">В ожидании: {{ stats.pending }}</span>
+              <span class="stat-badge approved">Одобрено: {{ stats.approved }}</span>
+              <span class="stat-badge rejected">Отклонено: {{ stats.rejected }}</span>
+            </div>
+          </div>
+        </BaseCard>
+      </div>
+
+      <!-- Loading State -->
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка заявок...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="error-state">
+        <p>{{ error }}</p>
+        <BaseButton @click="loadApplications">Повторить</BaseButton>
+      </div>
+
+      <!-- Applications List -->
+      <div v-else-if="applications.length > 0" class="applications-list">
+        <BaseCard v-for="application in applications" :key="application.id" elevated class="application-card">
+          <div class="application-header">
+            <div class="application-info">
+              <h3>Заявка №{{ application.id }}</h3>
+              <span :class="['status-badge', application.status]">
+                {{ getStatusLabel(application.status) }}
+              </span>
+            </div>
+            <div class="application-date">
+              {{ formatDate(application.application_date) }}
+            </div>
+          </div>
+
+          <div class="application-details">
+            <div class="detail-row">
+              <span class="label">ID клиента:</span>
+              <span class="value">{{ application.client_id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">ID объекта:</span>
+              <span class="value">{{ application.property_id }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Дата заселения:</span>
+              <span class="value">{{ formatDate(application.preferred_move_in_date) }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Срок аренды:</span>
+              <span class="value">{{ application.lease_duration_months }} мес.</span>
+            </div>
+            <div v-if="application.notes" class="detail-row full-width">
+              <span class="label">Примечания:</span>
+              <span class="value">{{ application.notes }}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="application-actions">
+            <BaseButton
+              v-if="application.status === 'pending'"
+              variant="success"
+              @click="updateApplicationStatus(application.id, 'approved')"
+              :disabled="updatingId === application.id"
+            >
+              Одобрить
+            </BaseButton>
+            <BaseButton
+              v-if="application.status === 'pending'"
+              variant="danger"
+              @click="updateApplicationStatus(application.id, 'rejected')"
+              :disabled="updatingId === application.id"
+            >
+              Отклонить
+            </BaseButton>
+            <BaseButton
+              v-if="application.status !== 'pending'"
+              variant="secondary"
+              @click="updateApplicationStatus(application.id, 'pending')"
+              :disabled="updatingId === application.id"
+            >
+              Вернуть в ожидание
+            </BaseButton>
+          </div>
+        </BaseCard>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        <p>Заявки не найдены</p>
+        <p class="text-secondary">Заявки появятся здесь после подачи клиентами</p>
+      </div>
     </div>
-
-    <!-- Filters -->
-    <div class="filters-section">
-      <BaseCard>
-        <div class="filters">
-          <div class="filter-group">
-            <label>Фильтр по статусу</label>
-            <select v-model="filters.status" @change="loadApplications" class="filter-select">
-              <option value="">Все статусы</option>
-              <option value="pending">В ожидании</option>
-              <option value="approved">Одобрено</option>
-              <option value="rejected">Отклонено</option>
-            </select>
-          </div>
-          <div class="filter-stats">
-            <span class="stat-badge pending">В ожидании: {{ stats.pending }}</span>
-            <span class="stat-badge approved">Одобрено: {{ stats.approved }}</span>
-            <span class="stat-badge rejected">Отклонено: {{ stats.rejected }}</span>
-          </div>
-        </div>
-      </BaseCard>
-    </div>
-
-    <!-- Loading State -->
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Загрузка заявок...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="error-state">
-      <p>{{ error }}</p>
-      <BaseButton @click="loadApplications">Повторить</BaseButton>
-    </div>
-
-    <!-- Applications List -->
-    <div v-else-if="applications.length > 0" class="applications-list">
-      <BaseCard v-for="application in applications" :key="application.id" elevated class="application-card">
-        <div class="application-header">
-          <div class="application-info">
-            <h3>Application #{{ application.id }}</h3>
-            <span :class="['status-badge', application.status]">
-              {{ application.status }}
-            </span>
-          </div>
-          <div class="application-date">
-            {{ formatDate(application.application_date) }}
-          </div>
-        </div>
-
-        <div class="application-details">
-          <div class="detail-row">
-            <span class="label">Client ID:</span>
-            <span class="value">{{ application.client_id }}</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Property ID:</span>
-            <span class="value">{{ application.property_id }}</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Move-in Date:</span>
-            <span class="value">{{ formatDate(application.preferred_move_in_date) }}</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Lease Duration:</span>
-            <span class="value">{{ application.lease_duration_months }} months</span>
-          </div>
-          <div v-if="application.notes" class="detail-row full-width">
-            <span class="label">Notes:</span>
-            <span class="value">{{ application.notes }}</span>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="application-actions">
-          <BaseButton
-            v-if="application.status === 'pending'"
-            variant="success"
-            @click="updateApplicationStatus(application.id, 'approved')"
-            :disabled="updatingId === application.id"
-          >
-            Approve
-          </BaseButton>
-          <BaseButton
-            v-if="application.status === 'pending'"
-            variant="danger"
-            @click="updateApplicationStatus(application.id, 'rejected')"
-            :disabled="updatingId === application.id"
-          >
-            Reject
-          </BaseButton>
-          <BaseButton
-            v-if="application.status !== 'pending'"
-            variant="secondary"
-            @click="updateApplicationStatus(application.id, 'pending')"
-            :disabled="updatingId === application.id"
-          >
-            Reset to Pending
-          </BaseButton>
-        </div>
-      </BaseCard>
-    </div>
-
-    <!-- Empty State -->
-    <div v-else class="empty-state">
-      <p>No applications found</p>
-      <p class="text-secondary">Applications will appear here when clients submit them</p>
-    </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { applicationsAPI } from '@/api/services/applications'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
@@ -144,7 +147,7 @@ const loadApplications = async () => {
     const response = await applicationsAPI.getAllAdmin(filters.value)
     applications.value = response.data
   } catch (err) {
-    error.value = err.response?.data?.detail || 'Failed to load applications'
+    error.value = err.response?.data?.detail || 'Не удалось загрузить заявки'
     console.error('Error loading applications:', err)
   } finally {
     loading.value = false
@@ -162,17 +165,26 @@ const updateApplicationStatus = async (id, status) => {
       application.status = status
     }
   } catch (err) {
-    error.value = err.response?.data?.detail || 'Failed to update application'
+    error.value = err.response?.data?.detail || 'Не удалось обновить заявку'
     console.error('Error updating application:', err)
   } finally {
     updatingId.value = null
   }
 }
 
+const getStatusLabel = (status) => {
+  const labels = {
+    'pending': 'В ожидании',
+    'approved': 'Одобрено',
+    'rejected': 'Отклонено'
+  }
+  return labels[status] || status
+}
+
 const formatDate = (dateString) => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return 'Не указано'
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -188,7 +200,6 @@ onMounted(() => {
 .applications-manage {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .page-header {
@@ -304,6 +315,10 @@ onMounted(() => {
   to { transform: rotate(360deg); }
 }
 
+.text-secondary {
+  color: var(--text-secondary);
+}
+
 /* Applications List */
 .applications-list {
   display: flex;
@@ -345,7 +360,6 @@ onMounted(() => {
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 600;
-  text-transform: capitalize;
 }
 
 .status-badge.pending {
@@ -406,10 +420,6 @@ onMounted(() => {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .applications-manage {
-    padding: 1rem;
-  }
-
   .filters {
     flex-direction: column;
     align-items: stretch;

@@ -324,7 +324,7 @@ const printContract = () => {
 }
 
 const goToApplications = () => {
-  router.push('/applications')
+  router.push('/client/applications')
 }
 
 onMounted(() => {
