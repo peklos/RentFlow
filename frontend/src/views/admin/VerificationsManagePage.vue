@@ -1,4 +1,5 @@
 <template>
+  <AdminLayout>
   <div class="verifications-manage">
     <div class="page-header">
       <h1>Управление верификациями</h1>
@@ -78,11 +79,13 @@
       </div>
     </div>
   </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { verificationsAPI } from '@/api/services/verifications'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
 const verifications = ref([])

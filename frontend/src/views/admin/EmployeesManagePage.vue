@@ -1,4 +1,5 @@
 <template>
+  <AdminLayout>
   <div class="employees-manage">
     <div class="page-header">
       <h1>Управление сотрудниками</h1>
@@ -82,11 +83,13 @@
       </div>
     </div>
   </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { employeesAPI } from '@/api/services/employees'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
 const employees = ref([])
