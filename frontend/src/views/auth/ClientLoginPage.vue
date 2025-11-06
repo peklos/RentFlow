@@ -44,6 +44,21 @@
           </BaseButton>
         </form>
 
+        <div class="test-credentials">
+          <div class="test-header">Тестовые данные для входа:</div>
+          <div class="test-item">
+            <span class="test-label">Телефон:</span>
+            <code class="test-value" @click="copyToClipboard('+79998887766')">+79998887766</code>
+          </div>
+          <div class="test-item">
+            <span class="test-label">Пароль:</span>
+            <code class="test-value" @click="copyToClipboard('client123')">client123</code>
+          </div>
+          <button class="test-fill-btn" @click="fillTestData" type="button">
+            Заполнить автоматически
+          </button>
+        </div>
+
         <div class="auth-footer">
           <p class="text-secondary">
             Нет аккаунта?
@@ -114,6 +129,17 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
+
+const fillTestData = () => {
+  form.value.phone = '+79998887766'
+  form.value.password = 'client123'
+}
+
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Скопировано: ' + text)
+  })
+}
 </script>
 
 <style scoped>
@@ -156,6 +182,66 @@ const handleLogin = async () => {
 
 .auth-form {
   margin-bottom: var(--spacing-xl);
+}
+
+.test-credentials {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.test-header {
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+.test-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.test-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.test-value {
+  background: var(--bg-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.test-value:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.test-fill-btn {
+  width: 100%;
+  margin-top: var(--spacing-sm);
+  padding: 0.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
+  transition: all 0.2s ease;
+}
+
+.test-fill-btn:hover {
+  background: var(--primary-hover);
 }
 
 .auth-footer {

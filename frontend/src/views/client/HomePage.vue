@@ -120,7 +120,7 @@
     </section>
 
     <footer class="app-footer text-center">
-      <p class="text-secondary">&copy; 2024 RentFlow by Samolet Plus. Все права защищены.</p>
+      <p class="text-secondary">&copy; 2025 RentFlow. Все права защищены.</p>
     </footer>
   </div>
 </template>

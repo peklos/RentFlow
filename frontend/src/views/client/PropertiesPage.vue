@@ -9,7 +9,19 @@
         <!-- Filters -->
         <BaseCard class="mb-xl">
           <div class="grid grid-cols-4 gap-md">
-            <BaseInput v-model="filters.type" label="Тип" placeholder="Все" />
+            <div class="filter-group">
+              <label class="filter-label">Тип</label>
+              <select v-model="filters.type" class="filter-select">
+                <option value="">Все типы</option>
+                <option value="Квартира">Квартира</option>
+                <option value="Студия">Студия</option>
+                <option value="Пентхаус">Пентхаус</option>
+                <option value="Таунхаус">Таунхаус</option>
+                <option value="Коттедж">Коттедж</option>
+                <option value="Офис">Офис</option>
+                <option value="Торговое помещение">Торговое помещение</option>
+              </select>
+            </div>
             <BaseInput v-model="filters.min_price" label="Мин. цена" type="number" />
             <BaseInput v-model="filters.max_price" label="Макс. цена" type="number" />
             <BaseButton variant="primary" @click="applyFilters" style="margin-top: 1.5rem;">
@@ -36,14 +48,14 @@
           >
             <div class="property-image">
               <img
-                src="https://via.placeholder.com/400x250/1e293b/3b82f6?text=Property"
-                alt="Property"
+                :src="getPropertyImage(property.subtype)"
+                :alt="property.subtype"
               />
               <span class="badge badge-success property-status">{{ property.status }}</span>
             </div>
 
             <h3 class="text-xl font-semibold mt-md mb-sm">
-              Недвижимость {{ property.type }}
+              {{ property.subtype }}
             </h3>
 
             <p class="text-secondary mb-md">{{ property.address }}</p>
@@ -95,8 +107,9 @@ const properties = ref([])
 const loading = ref(false)
 const filters = ref({
   type: '',
-  min_price: '',
-  max_price: ''
+  min_price: null,
+  max_price: null,
+  status: ''  // Show all properties, not just available
 })
 
 onMounted(async () => {
@@ -127,6 +140,19 @@ const applyFilters = async () => {
 
 const formatMoney = (value) => {
   return new Intl.NumberFormat('ru-RU').format(value)
+}
+
+const getPropertyImage = (subtype) => {
+  const imageMap = {
+    'Квартира': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=250&fit=crop',
+    'Студия': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=250&fit=crop',
+    'Пентхаус': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=250&fit=crop',
+    'Таунхаус': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=250&fit=crop',
+    'Коттедж': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=250&fit=crop',
+    'Офис': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop',
+    'Торговое помещение': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop'
+  }
+  return imageMap[subtype] || 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400&h=250&fit=crop'
 }
 </script>
 
@@ -199,5 +225,45 @@ const formatMoney = (value) => {
   flex-direction: column;
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-md);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.filter-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.filter-select {
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>
