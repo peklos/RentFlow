@@ -18,7 +18,7 @@ async def create_employee(
     # Check if login already exists
     existing = db.query(Employee).filter(Employee.login == employee_data.login).first()
     if existing:
-        raise HTTPException(status_code=400, detail="Login already exists")
+        raise HTTPException(status_code=400, detail="Логин уже существует")
 
     employee_dict = employee_data.dict()
     password = employee_dict.pop("password")

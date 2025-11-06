@@ -29,7 +29,7 @@ async def get_application(application_id: int, db: Session = Depends(get_db)):
     """Get application by ID"""
     application = db.query(Application).filter(Application.id == application_id).first()
     if not application:
-        raise HTTPException(status_code=404, detail="Application not found")
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
     return application
 
 
@@ -42,7 +42,7 @@ async def update_application(
     """Update application status"""
     application = db.query(Application).filter(Application.id == application_id).first()
     if not application:
-        raise HTTPException(status_code=404, detail="Application not found")
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
 
     update_data = application_data.dict(exclude_unset=True)
     for field, value in update_data.items():

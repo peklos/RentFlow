@@ -13,7 +13,7 @@ async def get_profile(client_id: int, db: Session = Depends(get_db)):
     """Get client profile by ID"""
     client = db.query(Client).filter(Client.id == client_id).first()
     if not client:
-        raise HTTPException(status_code=404, detail="Profile not found")
+        raise HTTPException(status_code=404, detail="Профиль не найден")
     return client
 
 
@@ -37,7 +37,7 @@ async def update_profile(
     """Update client profile"""
     client = db.query(Client).filter(Client.id == client_id).first()
     if not client:
-        raise HTTPException(status_code=404, detail="Profile not found")
+        raise HTTPException(status_code=404, detail="Профиль не найден")
 
     # Update fields
     update_data = profile_data.dict(exclude_unset=True)

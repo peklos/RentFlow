@@ -41,7 +41,7 @@ async def update_service(
     """Update service (admin)"""
     service = db.query(AdditionalService).filter(AdditionalService.id == service_id).first()
     if not service:
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise HTTPException(status_code=404, detail="Услуга не найдена")
 
     update_data = service_data.dict(exclude_unset=True)
     for field, value in update_data.items():

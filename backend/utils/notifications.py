@@ -4,54 +4,54 @@ from typing import Optional
 
 async def send_sms(phone: str, message: str) -> bool:
     """
-    Send SMS notification
-    In production, integrate with SMS service provider (e.g., Twilio, SMS.RU)
+    Отправка SMS уведомления
+    В продакшене интегрировать с провайдером SMS (например, Twilio, SMS.RU)
     """
-    # TODO: Implement actual SMS sending
-    print(f"[SMS] To: {phone}, Message: {message}")
+    # TODO: Реализовать реальную отправку SMS
+    print(f"[SMS] Кому: {phone}, Сообщение: {message}")
     return True
 
 
 async def send_email(to_email: str, subject: str, body: str) -> bool:
     """
-    Send email notification
-    In production, integrate with email service provider
+    Отправка email уведомления
+    В продакшене интегрировать с провайдером email сервиса
     """
-    # TODO: Implement actual email sending
-    print(f"[EMAIL] To: {to_email}, Subject: {subject}")
-    print(f"Body: {body}")
+    # TODO: Реализовать реальную отправку email
+    print(f"[EMAIL] Кому: {to_email}, Тема: {subject}")
+    print(f"Тело: {body}")
     return True
 
 
 async def send_verification_code(phone: str, code: str) -> bool:
-    """Send verification code via SMS"""
-    message = f"Your RentFlow verification code: {code}"
+    """Отправка кода верификации через SMS"""
+    message = f"Ваш код верификации RentFlow: {code}"
     return await send_sms(phone, message)
 
 
 async def send_application_notification(email: str, property_address: str, status: str) -> bool:
-    """Send application status notification"""
-    subject = f"Application Status Update - {status}"
+    """Отправка уведомления о статусе заявки"""
+    subject = f"Обновление статуса заявки - {status}"
     body = f"""
-    Your rental application for property at {property_address} has been {status}.
+    Ваша заявка на аренду объекта по адресу {property_address} получила статус: {status}.
 
-    Please log in to your account for more details.
+    Пожалуйста, войдите в свой аккаунт для получения дополнительной информации.
 
-    Best regards,
-    RentFlow Team
+    С уважением,
+    Команда RentFlow
     """
     return await send_email(email, subject, body)
 
 
 async def send_payment_reminder(email: str, amount: float, due_date: str) -> bool:
-    """Send payment reminder"""
-    subject = "Rent Payment Reminder"
+    """Отправка напоминания о платеже"""
+    subject = "Напоминание об оплате аренды"
     body = f"""
-    This is a reminder that your rent payment of {amount} RUB is due on {due_date}.
+    Это напоминание о том, что ваш платеж за аренду в размере {amount} руб. должен быть произведен до {due_date}.
 
-    Please ensure timely payment to avoid late fees.
+    Пожалуйста, обеспечьте своевременную оплату во избежание штрафов.
 
-    Best regards,
-    RentFlow Team
+    С уважением,
+    Команда RentFlow
     """
     return await send_email(email, subject, body)

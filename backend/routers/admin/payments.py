@@ -35,7 +35,7 @@ async def update_payment(
     """Update payment (admin)"""
     payment = db.query(Payment).filter(Payment.id == payment_id).first()
     if not payment:
-        raise HTTPException(status_code=404, detail="Payment not found")
+        raise HTTPException(status_code=404, detail="Платеж не найден")
 
     update_data = payment_data.dict(exclude_unset=True)
     for field, value in update_data.items():

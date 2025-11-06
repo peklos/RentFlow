@@ -42,5 +42,5 @@ async def get_application(application_id: int, db: Session = Depends(get_db)):
     """Get specific application"""
     application = db.query(Application).filter(Application.id == application_id).first()
     if not application:
-        raise HTTPException(status_code=404, detail="Application not found")
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
     return application
