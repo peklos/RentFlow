@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from datetime import timedelta
 import random
 
 from db.database import get_db
 from db.models import UserClient, Client
-from schemas.user import UserRegister, UserLogin, Token, VerifyPhone, UserResponse
+from schemas.user import UserRegister, UserLogin, UserResponse, VerifyPhone
 from schemas.client import ClientCreate
-from utils.security import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from utils.security import get_password_hash, verify_password
 from utils.validators import validate_phone, normalize_phone
 from utils.notifications import send_verification_code
 
@@ -38,12 +37,22 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
         email=user_data.email,
         password_hash=get_password_hash(user_data.password),
         verification_code=verification_code,
-        is_verified=False
+        is_verified=True  # Auto-verify for simplicity
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # Create client profile
+    new_client = Client(
+        user_id=new_user.id,
+        full_name=f"Client {new_user.id}",
+        phone=normalized_phone,
+        email=user_data.email
+    )
+    db.add(new_client)
+    db.commit()
 
     # Send verification code
     await send_verification_code(normalized_phone, verification_code)
@@ -51,7 +60,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.post("/login", response_model=Token)
+@router.post("/login")
 async def login(credentials: UserLogin, db: Session = Depends(get_db)):
     """Login client"""
     normalized_phone = normalize_phone(credentials.phone)
@@ -66,14 +75,13 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
     if not user.is_active:
         raise HTTPException(status_code=400, detail="Account is inactive")
 
-    # Create access token
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": str(user.id), "type": "client"},
-        expires_delta=access_token_expires
-    )
-
-    return {"access_token": access_token, "token_type": "bearer"}
+    # Return user info instead of token
+    return {
+        "id": user.id,
+        "phone": user.phone,
+        "email": user.email,
+        "message": "Login successful"
+    }
 
 
 @router.post("/verify-phone", response_model=dict)

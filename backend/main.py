@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from db.database import engine, Base
+from db.database import engine, Base, get_db
+from db.init_data import create_initial_data
 
 # Import all routers
 from routers.client import auth as client_auth
@@ -24,26 +25,36 @@ from routers.admin import (
 # Create FastAPI application
 app = FastAPI(
     title="RentFlow API",
-    description="API for rental property management system",
-    version="1.0.0",
+    description="API for rental property management system - No Auth Version",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
 
-# CORS middleware
+# CORS middleware - Allow all origins for development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Create tables on startup
+# Create tables and initial data on startup
 @app.on_event("startup")
 async def startup_event():
+    print("🚀 Starting RentFlow API...")
     Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created successfully")
+    print("✅ Database tables created")
+
+    # Create initial data
+    db = next(get_db())
+    try:
+        create_initial_data(db)
+    except Exception as e:
+        print(f"Initial data creation: {e}")
+    finally:
+        db.close()
 
 # Client routers
 app.include_router(client_auth.router, prefix="/api/client/auth", tags=["Client Auth"])
@@ -77,13 +88,20 @@ app.include_router(statistics.router, prefix="/api/admin/statistics", tags=["Adm
 def read_root():
     return {
         "message": "Welcome to RentFlow API",
+        "version": "2.0.0",
+        "status": "operational",
         "docs": "/docs",
         "redoc": "/redoc",
-        "version": "1.0.0",
-        "status": "operational"
+        "features": [
+            "50+ API endpoints",
+            "12 database tables",
+            "No authentication required",
+            "Full CRUD operations",
+            "Test data included"
+        ]
     }
 
 # Health check
 @app.get("/health")
 def health_check():
-    return {"status": "healthy", "service": "RentFlow API"}
+    return {"status": "healthy", "service": "RentFlow API v2.0"}
