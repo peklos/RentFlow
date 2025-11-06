@@ -14,35 +14,12 @@
             Тысячи проверенных объектов для аренды. Современно, удобно и без лишних хлопот.
           </p>
           <div class="hero-actions">
-            <router-link to="/properties">
-              <BaseButton variant="primary" size="lg">Смотреть объекты</BaseButton>
+            <router-link to="/client/login">
+              <BaseButton variant="primary" size="lg">Вход для клиентов</BaseButton>
             </router-link>
-            <router-link to="/client/register">
-              <BaseButton variant="outline" size="lg">Начать</BaseButton>
+            <router-link to="/employee/login">
+              <BaseButton variant="outline" size="lg">Вход для сотрудников</BaseButton>
             </router-link>
-          </div>
-        </div>
-
-        <!-- Search Box -->
-        <div class="search-box card-elevated">
-          <div class="grid grid-cols-4 gap-md">
-            <div class="filter-group">
-              <label class="filter-label">Локация</label>
-              <select class="filter-select">
-                <option value="">Все локации</option>
-                <option value="Москва, Арбат">Москва, Арбат</option>
-                <option value="Москва, Ленинский проспект">Москва, Ленинский проспект</option>
-                <option value="Москва, Бауманская">Москва, Бауманская</option>
-                <option value="Москва, Кутузовский проспект">Москва, Кутузовский проспект</option>
-                <option value="Москва, Проспект Мира">Москва, Проспект Мира</option>
-                <option value="Москва, Москва-Сити">Москва, Москва-Сити</option>
-              </select>
-            </div>
-            <BaseInput placeholder="50 000" label="Мин. цена" type="number" />
-            <BaseInput placeholder="2" label="Комнат" type="number" />
-            <BaseButton variant="primary" style="margin-top: 1.5rem;">
-              Искать
-            </BaseButton>
           </div>
         </div>
       </div>

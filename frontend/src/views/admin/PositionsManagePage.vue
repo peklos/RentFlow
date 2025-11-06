@@ -1,4 +1,5 @@
 <template>
+  <AdminLayout>
   <div class="positions-manage">
     <div class="page-header">
       <div>
@@ -70,11 +71,13 @@
       </div>
     </div>
   </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { positionsAPI } from '@/api/services/positions'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
 const positions = ref([])
@@ -145,7 +148,7 @@ const deletePosition = async (id) => {
 .positions-manage {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  
 }
 
 .page-header {
