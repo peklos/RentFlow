@@ -35,7 +35,7 @@ async def get_property(property_id: int, db: Session = Depends(get_db)):
     """Get property by ID"""
     property = db.query(Property).filter(Property.id == property_id).first()
     if not property:
-        raise HTTPException(status_code=404, detail="Property not found")
+        raise HTTPException(status_code=404, detail="Объект недвижимости не найден")
     return property
 
 
@@ -48,7 +48,7 @@ async def update_property(
     """Update property"""
     property = db.query(Property).filter(Property.id == property_id).first()
     if not property:
-        raise HTTPException(status_code=404, detail="Property not found")
+        raise HTTPException(status_code=404, detail="Объект недвижимости не найден")
 
     update_data = property_data.dict(exclude_unset=True)
     for field, value in update_data.items():
@@ -64,8 +64,8 @@ async def delete_property(property_id: int, db: Session = Depends(get_db)):
     """Delete property"""
     property = db.query(Property).filter(Property.id == property_id).first()
     if not property:
-        raise HTTPException(status_code=404, detail="Property not found")
+        raise HTTPException(status_code=404, detail="Объект недвижимости не найден")
 
     db.delete(property)
     db.commit()
-    return {"message": "Property deleted successfully"}
+    return {"message": "Объект недвижимости успешно удален"}

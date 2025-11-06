@@ -54,6 +54,6 @@ async def get_property(property_id: int, db: Session = Depends(get_db)):
     """Get property details by ID"""
     property = db.query(Property).filter(Property.id == property_id).first()
     if not property:
-        raise HTTPException(status_code=404, detail="Property not found")
+        raise HTTPException(status_code=404, detail="Объект недвижимости не найден")
 
     return property

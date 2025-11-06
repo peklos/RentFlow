@@ -16,16 +16,16 @@ async def employee_login(credentials: EmployeeLogin, db: Session = Depends(get_d
     if not employee or credentials.password != employee.password_hash:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect login or password"
+            detail="Неверный логин или пароль"
         )
 
     if not employee.is_active:
-        raise HTTPException(status_code=400, detail="Employee account is inactive")
+        raise HTTPException(status_code=400, detail="Аккаунт сотрудника неактивен")
 
     # Return employee info instead of token
     return {
         "id": employee.id,
         "login": employee.login,
         "position_id": employee.position_id,
-        "message": "Login successful"
+        "message": "Вход выполнен успешно"
     }

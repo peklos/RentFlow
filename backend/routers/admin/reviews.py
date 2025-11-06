@@ -33,7 +33,7 @@ async def update_review(
     """Approve or reject review (admin)"""
     review = db.query(Review).filter(Review.id == review_id).first()
     if not review:
-        raise HTTPException(status_code=404, detail="Review not found")
+        raise HTTPException(status_code=404, detail="Отзыв не найден")
 
     update_data = review_data.dict(exclude_unset=True)
     for field, value in update_data.items():

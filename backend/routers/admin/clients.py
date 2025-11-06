@@ -28,6 +28,6 @@ async def get_client(
     """Get client by ID (admin)"""
     client = db.query(Client).filter(Client.id == client_id).first()
     if not client:
-        raise HTTPException(status_code=404, detail="Client not found")
+        raise HTTPException(status_code=404, detail="Клиент не найден")
 
     return client

@@ -8,31 +8,31 @@ from decimal import Decimal
 
 
 def create_initial_data(db: Session):
-    """Create initial test data for the database"""
+    """Создание начальных тестовых данных для базы данных"""
 
-    # Check if data already exists
+    # Проверка существования данных
     if db.query(Position).first():
-        print("Initial data already exists, skipping...")
+        print("Начальные данные уже существуют, пропускаем...")
         return
 
-    print("Creating initial data...")
+    print("Создание начальных данных...")
 
-    # 1. Create Positions
+    # 1. Создание должностей
     positions = [
-        Position(name="Administrator", description="System administrator", access_level=10),
-        Position(name="Manager", description="Property manager", access_level=5),
-        Position(name="Agent", description="Rental agent", access_level=3),
+        Position(name="Администратор", description="Системный администратор", access_level=10),
+        Position(name="Менеджер", description="Менеджер по недвижимости", access_level=5),
+        Position(name="Агент", description="Агент по аренде", access_level=3),
     ]
     db.add_all(positions)
     db.commit()
-    print("✓ Positions created")
+    print("✓ Должности созданы")
 
-    # 2. Create Employees (plain passwords for educational purposes)
+    # 2. Создание сотрудников (простые пароли для учебных целей)
     employees = [
         Employee(
             login="admin",
-            password_hash="admin123",  # Plain text password
-            full_name="Admin User",
+            password_hash="admin123",  # Простой текстовый пароль
+            full_name="Администратор Системы",
             position_id=1,
             phone="+79991111111",
             email="admin@rentflow.com",
@@ -41,8 +41,8 @@ def create_initial_data(db: Session):
         ),
         Employee(
             login="manager1",
-            password_hash="manager123",  # Plain text password
-            full_name="Ivan Petrov",
+            password_hash="manager123",  # Простой текстовый пароль
+            full_name="Иван Петров",
             position_id=2,
             phone="+79992222222",
             email="manager@rentflow.com",
@@ -52,168 +52,168 @@ def create_initial_data(db: Session):
     ]
     db.add_all(employees)
     db.commit()
-    print("✓ Employees created")
+    print("✓ Сотрудники созданы")
 
-    # 3. Create Companies
+    # 3. Создание компаний
     companies = [
         Company(
             name='ООО "Самолет Плюс"',
             inn="7712345678",
-            legal_address="Moscow, Red Square, 1"
+            legal_address="Москва, Красная площадь, 1"
         ),
         Company(
             name='ООО "Недвижимость XXI"',
             inn="7723456789",
-            legal_address="Moscow, Tverskaya, 10"
+            legal_address="Москва, ул. Тверская, 10"
         ),
     ]
     db.add_all(companies)
     db.commit()
-    print("✓ Companies created")
+    print("✓ Компании созданы")
 
-    # 4. Create Properties
+    # 4. Создание объектов недвижимости
     properties = [
-        # Residential properties
+        # Жилая недвижимость
         Property(
             type="residential",
             subtype="Квартира",
-            address="Moscow, Arbat Street, 15, apt 42",
+            address="Москва, ул. Арбат, 15, кв. 42",
             area=Decimal("75.5"),
             rooms_count=2,
             floor=5,
             total_floors=12,
-            renovation_type="Modern",
+            renovation_type="Современный",
             is_furnished=True,
             monthly_rent=Decimal("80000"),
             utilities_included=False,
             deposit_amount=Decimal("80000"),
-            description="Cozy 2-room apartment in the city center with modern renovation",
-            amenities="Wi-Fi, Air conditioning, Washing machine, Dishwasher",
+            description="Уютная 2-комнатная квартира в центре города с современным ремонтом",
+            amenities="Wi-Fi, Кондиционер, Стиральная машина, Посудомоечная машина",
             status="available",
             published_at=datetime.now()
         ),
         Property(
             type="residential",
             subtype="Пентхаус",
-            address="Moscow, Leninsky Prospekt, 45, apt 120",
+            address="Москва, Ленинский проспект, 45, кв. 120",
             area=Decimal("120.0"),
             rooms_count=3,
             floor=10,
             total_floors=16,
-            renovation_type="Premium",
+            renovation_type="Премиум",
             is_furnished=True,
             monthly_rent=Decimal("150000"),
             utilities_included=False,
             deposit_amount=Decimal("150000"),
-            description="Luxury 3-room apartment with panoramic views",
-            amenities="Wi-Fi, Air conditioning, Smart home, Parking",
+            description="Роскошная 3-комнатная квартира с панорамным видом",
+            amenities="Wi-Fi, Кондиционер, Умный дом, Парковка",
             status="available",
             published_at=datetime.now()
         ),
         Property(
             type="residential",
             subtype="Студия",
-            address="Moscow, Baumanskaya Street, 23, apt 5",
+            address="Москва, ул. Бауманская, 23, кв. 5",
             area=Decimal("35.0"),
             rooms_count=1,
             floor=3,
             total_floors=9,
-            renovation_type="Standard",
+            renovation_type="Стандарт",
             is_furnished=True,
             monthly_rent=Decimal("45000"),
             utilities_included=False,
             deposit_amount=Decimal("45000"),
-            description="Compact studio near metro station",
-            amenities="Wi-Fi, Kitchen appliances",
+            description="Компактная студия рядом со станцией метро",
+            amenities="Wi-Fi, Кухонная техника",
             status="available",
             published_at=datetime.now()
         ),
         Property(
             type="residential",
             subtype="Таунхаус",
-            address="Moscow, Kutuzovsky Prospekt, 12, apt 78",
+            address="Москва, Кутузовский проспект, 12, кв. 78",
             area=Decimal("95.0"),
             rooms_count=2,
             floor=15,
             total_floors=25,
-            renovation_type="Modern",
+            renovation_type="Современный",
             is_furnished=False,
             monthly_rent=Decimal("100000"),
             utilities_included=False,
             deposit_amount=Decimal("100000"),
-            description="Spacious apartment in prestigious area",
-            amenities="Concierge, Gym, Underground parking",
+            description="Просторная квартира в престижном районе",
+            amenities="Консьерж, Спортзал, Подземная парковка",
             status="available",
             published_at=datetime.now()
         ),
-        # Commercial properties
+        # Коммерческая недвижимость
         Property(
             type="commercial",
             subtype="Офис",
-            address="Moscow, Business Center Tower, 5th floor",
+            address="Москва, Бизнес Центр Башня, 5 этаж",
             area=Decimal("200.0"),
             floor=5,
             total_floors=20,
-            renovation_type="Business class",
+            renovation_type="Бизнес-класс",
             is_furnished=True,
             monthly_rent=Decimal("300000"),
             utilities_included=True,
             deposit_amount=Decimal("600000"),
-            description="Modern office space in business district",
-            amenities="Reception, Meeting rooms, Parking, Security",
+            description="Современное офисное помещение в деловом районе",
+            amenities="Ресепшн, Переговорные комнаты, Парковка, Охрана",
             status="available",
             published_at=datetime.now()
         ),
         Property(
             type="commercial",
             subtype="Торговое помещение",
-            address="Moscow, Shopping Center Mega, Ground floor",
+            address="Москва, ТЦ Мега, Первый этаж",
             area=Decimal("80.0"),
             floor=1,
             total_floors=3,
-            renovation_type="Commercial",
+            renovation_type="Коммерческий",
             is_furnished=False,
             monthly_rent=Decimal("250000"),
             utilities_included=False,
             deposit_amount=Decimal("500000"),
-            description="Retail space in popular shopping center",
-            amenities="High foot traffic, Loading bay",
+            description="Торговая площадь в популярном торговом центре",
+            amenities="Высокая проходимость, Погрузочная зона",
             status="available",
             published_at=datetime.now()
         ),
         Property(
             type="residential",
             subtype="Квартира",
-            address="Moscow, Prospekt Mira, 88, apt 202",
+            address="Москва, Проспект Мира, 88, кв. 202",
             area=Decimal("60.0"),
             rooms_count=2,
             floor=8,
             total_floors=14,
-            renovation_type="Standard",
+            renovation_type="Стандарт",
             is_furnished=True,
             monthly_rent=Decimal("65000"),
             utilities_included=False,
             deposit_amount=Decimal("65000"),
-            description="Comfortable apartment near VDNKh",
-            amenities="Balcony, Internet, Cable TV",
+            description="Комфортная квартира рядом с ВДНХ",
+            amenities="Балкон, Интернет, Кабельное ТВ",
             status="rented",
             published_at=datetime.now() - timedelta(days=30)
         ),
         Property(
             type="residential",
             subtype="Коттедж",
-            address="Moscow, Moskva City, Tower Federation, apt 501",
+            address="Москва, Москва-Сити, Башня Федерация, кв. 501",
             area=Decimal("250.0"),
             rooms_count=4,
             floor=50,
             total_floors=50,
-            renovation_type="Luxury",
+            renovation_type="Люкс",
             is_furnished=True,
             monthly_rent=Decimal("500000"),
             utilities_included=True,
             deposit_amount=Decimal("1000000"),
-            description="Exclusive penthouse with breathtaking views",
-            amenities="Private elevator, Terrace, Smart home, Concierge, Spa",
+            description="Эксклюзивный пентхаус с захватывающим видом",
+            amenities="Частный лифт, Терраса, Умный дом, Консьерж, Спа",
             status="available",
             published_at=datetime.now()
         ),
@@ -612,48 +612,48 @@ def create_initial_data(db: Session):
     ]
     db.add_all(properties)
     db.commit()
-    print("✓ Properties created")
+    print("✓ Объекты недвижимости созданы")
 
-    # 5. Create User Clients (plain passwords for educational purposes)
+    # 5. Создание учетных записей клиентов (простые пароли для учебных целей)
     user_clients = [
         UserClient(
             phone="+79998887766",
             email="alex@example.com",
-            password_hash="client123",  # Plain text password
+            password_hash="client123",  # Простой текстовый пароль
             is_active=True,
             is_verified=True
         ),
         UserClient(
             phone="+79997776655",
             email="maria@example.com",
-            password_hash="client123",  # Plain text password
+            password_hash="client123",  # Простой текстовый пароль
             is_active=True,
             is_verified=True
         ),
         UserClient(
             phone="+79996665544",
             email="dmitry@example.com",
-            password_hash="client123",  # Plain text password
+            password_hash="client123",  # Простой текстовый пароль
             is_active=True,
             is_verified=True
         ),
     ]
     db.add_all(user_clients)
     db.commit()
-    print("✓ User clients created")
+    print("✓ Учетные записи клиентов созданы")
 
-    # 6. Create Client Profiles
+    # 6. Создание профилей клиентов
     clients = [
         Client(
             user_id=1,
-            full_name="Alexander Ivanov",
+            full_name="Александр Иванов",
             date_of_birth=date(1990, 5, 15),
             phone="+79998887766",
             email="alex@example.com",
-            registration_address="Moscow, Lenin Street, 25, apt 10",
-            actual_address="Moscow, Lenin Street, 25, apt 10",
-            workplace='LLC "TechCorp"',
-            position="Senior Developer",
+            registration_address="Москва, ул. Ленина, 25, кв. 10",
+            actual_address="Москва, ул. Ленина, 25, кв. 10",
+            workplace='ООО "ТехКорп"',
+            position="Старший разработчик",
             monthly_income=Decimal("150000"),
             is_verified=True,
             client_type="individual",
@@ -661,14 +661,14 @@ def create_initial_data(db: Session):
         ),
         Client(
             user_id=2,
-            full_name="Maria Petrova",
+            full_name="Мария Петрова",
             date_of_birth=date(1985, 8, 22),
             phone="+79997776655",
             email="maria@example.com",
-            registration_address="Moscow, Pushkin Street, 12, apt 55",
-            actual_address="Moscow, Pushkin Street, 12, apt 55",
-            workplace='Bank "Finance Plus"',
-            position="Manager",
+            registration_address="Москва, ул. Пушкина, 12, кв. 55",
+            actual_address="Москва, ул. Пушкина, 12, кв. 55",
+            workplace='Банк "Финанс Плюс"',
+            position="Менеджер",
             monthly_income=Decimal("120000"),
             is_verified=True,
             client_type="individual",
@@ -676,14 +676,14 @@ def create_initial_data(db: Session):
         ),
         Client(
             user_id=3,
-            full_name="Dmitry Smirnov",
+            full_name="Дмитрий Смирнов",
             date_of_birth=date(1992, 3, 10),
             phone="+79996665544",
             email="dmitry@example.com",
-            registration_address="Moscow, Gagarin Street, 7, apt 89",
-            actual_address="Moscow, Gagarin Street, 7, apt 89",
-            workplace='LLC "StartupHub"',
-            position="Product Manager",
+            registration_address="Москва, ул. Гагарина, 7, кв. 89",
+            actual_address="Москва, ул. Гагарина, 7, кв. 89",
+            workplace='ООО "СтартапХаб"',
+            position="Менеджер продукта",
             monthly_income=Decimal("180000"),
             is_verified=True,
             client_type="individual",
@@ -693,9 +693,9 @@ def create_initial_data(db: Session):
     ]
     db.add_all(clients)
     db.commit()
-    print("✓ Clients created")
+    print("✓ Клиенты созданы")
 
-    # 7. Create Applications
+    # 7. Создание заявок
     applications = [
         Application(
             client_id=1,
@@ -704,7 +704,7 @@ def create_initial_data(db: Session):
             status="approved",
             preferred_move_in_date=date.today() + timedelta(days=7),
             lease_duration_months=12,
-            notes="Looking for long-term rental"
+            notes="Ищу долгосрочную аренду"
         ),
         Application(
             client_id=2,
@@ -713,7 +713,7 @@ def create_initial_data(db: Session):
             status="under_review",
             preferred_move_in_date=date.today() + timedelta(days=14),
             lease_duration_months=12,
-            notes="Family of 3 people"
+            notes="Семья из 3 человек"
         ),
         Application(
             client_id=3,
@@ -722,14 +722,14 @@ def create_initial_data(db: Session):
             status="approved",
             preferred_move_in_date=date.today() - timedelta(days=5),
             lease_duration_months=24,
-            notes="Office for startup company"
+            notes="Офис для стартап компании"
         ),
     ]
     db.add_all(applications)
     db.commit()
-    print("✓ Applications created")
+    print("✓ Заявки созданы")
 
-    # 8. Create Contracts
+    # 8. Создание контрактов
     contracts = [
         Contract(
             contract_number="RENT-2024-001",
@@ -744,22 +744,22 @@ def create_initial_data(db: Session):
             deposit_paid=True,
             contract_status="active",
             payment_day=5,
-            payment_method="Bank transfer",
+            payment_method="Банковский перевод",
             signed_electronically=True
         ),
     ]
     db.add_all(contracts)
     db.commit()
-    print("✓ Contracts created")
+    print("✓ Контракты созданы")
 
-    # 9. Create Payments
+    # 9. Создание платежей
     payments = [
         Payment(
             contract_id=1,
             payment_date=date.today() - timedelta(days=25),
             amount=Decimal("65000"),
             payment_type="deposit",
-            payment_method="Bank transfer",
+            payment_method="Банковский перевод",
             payment_status="completed",
             transaction_id="TRX-001-2024",
             is_late=False,
@@ -771,7 +771,7 @@ def create_initial_data(db: Session):
             payment_date=date.today() - timedelta(days=20),
             amount=Decimal("65000"),
             payment_type="rent",
-            payment_method="Bank transfer",
+            payment_method="Банковский перевод",
             payment_status="completed",
             transaction_id="TRX-002-2024",
             period_month=datetime.now().month,
@@ -783,9 +783,9 @@ def create_initial_data(db: Session):
     ]
     db.add_all(payments)
     db.commit()
-    print("✓ Payments created")
+    print("✓ Платежи созданы")
 
-    # 10. Create Additional Services
+    # 10. Создание дополнительных услуг
     services = [
         AdditionalService(
             name="Уборка помещения",
@@ -860,9 +860,9 @@ def create_initial_data(db: Session):
     ]
     db.add_all(services)
     db.commit()
-    print("✓ Additional services created")
+    print("✓ Дополнительные услуги созданы")
 
-    # 11. Create Contracts
+    # 11. Создание дополнительных контрактов
     contracts = [
         Contract(
             contract_number="RENT-2025-001",
@@ -877,7 +877,7 @@ def create_initial_data(db: Session):
             deposit_paid=True,
             contract_status='active',
             payment_day=5,
-            payment_method='bank_transfer',
+            payment_method='Банковский перевод',
             additional_services="Парковочное место, Интернет",
             signed_electronically=True,
             notes="Договор с физическим лицом. Клиент надежный, оплата всегда вовремя."
@@ -895,7 +895,7 @@ def create_initial_data(db: Session):
             deposit_paid=True,
             contract_status='active',
             payment_day=1,
-            payment_method='bank_transfer',
+            payment_method='Банковский перевод',
             additional_services="Парковочное место, Уборка помещения, Интернет",
             signed_electronically=False,
             notes="Долгосрочный договор аренды с компанией."
@@ -913,7 +913,7 @@ def create_initial_data(db: Session):
             deposit_paid=True,
             contract_status='expired',
             payment_day=10,
-            payment_method='cash',
+            payment_method='Наличные',
             additional_services="Интернет",
             signed_electronically=True,
             notes="Договор истек. Клиент съехал без проблем, залог возвращен."
@@ -921,15 +921,15 @@ def create_initial_data(db: Session):
     ]
     db.add_all(contracts)
     db.commit()
-    print("✓ Contracts created")
+    print("✓ Дополнительные контракты созданы")
 
-    # 12. Create Reviews
+    # 12. Создание отзывов
     reviews = [
         Review(
             client_id=1,
             property_id=1,
             rating=5,
-            text="Excellent apartment! Clean, modern, and perfect location. Highly recommend!",
+            text="Отличная квартира! Чистая, современная и идеальное расположение. Очень рекомендую!",
             review_date=date.today() - timedelta(days=2),
             is_approved=True
         ),
@@ -937,7 +937,7 @@ def create_initial_data(db: Session):
             client_id=2,
             property_id=2,
             rating=4,
-            text="Great apartment with beautiful views. Only minor issue with elevator sometimes.",
+            text="Прекрасная квартира с красивым видом. Единственная небольшая проблема - иногда лифт.",
             review_date=date.today() - timedelta(days=5),
             is_approved=True
         ),
@@ -945,22 +945,22 @@ def create_initial_data(db: Session):
             client_id=3,
             property_id=7,
             rating=5,
-            text="Living here for a month already. Very comfortable and quiet neighborhood!",
+            text="Живу здесь уже месяц. Очень комфортный и тихий район!",
             review_date=date.today() - timedelta(days=1),
             is_approved=True
         ),
     ]
     db.add_all(reviews)
     db.commit()
-    print("✓ Reviews created")
+    print("✓ Отзывы созданы")
 
-    print("✅ Initial data created successfully!")
+    print("✅ Начальные данные успешно созданы!")
     print("\n" + "="*60)
-    print("Test credentials:")
+    print("Тестовые учетные данные:")
     print("="*60)
-    print("Admin: login='admin', password='admin123'")
-    print("Manager: login='manager1', password='manager123'")
-    print("Client 1: phone='+79998887766', password='client123'")
-    print("Client 2: phone='+79997776655', password='client123'")
-    print("Client 3: phone='+79996665544', password='client123'")
+    print("Админ: login='admin', password='admin123'")
+    print("Менеджер: login='manager1', password='manager123'")
+    print("Клиент 1: phone='+79998887766', password='client123'")
+    print("Клиент 2: phone='+79997776655', password='client123'")
+    print("Клиент 3: phone='+79996665544', password='client123'")
     print("="*60)

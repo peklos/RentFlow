@@ -28,6 +28,6 @@ async def get_contract(
     contract = db.query(Contract).filter(Contract.id == contract_id).first()
 
     if not contract:
-        raise HTTPException(status_code=404, detail="Contract not found")
+        raise HTTPException(status_code=404, detail="Контракт не найден")
 
     return contract

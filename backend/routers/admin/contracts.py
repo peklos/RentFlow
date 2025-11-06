@@ -49,7 +49,7 @@ async def update_contract(
     """Update contract (admin)"""
     contract = db.query(Contract).filter(Contract.id == contract_id).first()
     if not contract:
-        raise HTTPException(status_code=404, detail="Contract not found")
+        raise HTTPException(status_code=404, detail="Контракт не найден")
 
     update_data = contract_data.dict(exclude_unset=True)
     for field, value in update_data.items():
