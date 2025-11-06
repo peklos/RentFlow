@@ -862,7 +862,68 @@ def create_initial_data(db: Session):
     db.commit()
     print("✓ Additional services created")
 
-    # 11. Create Reviews
+    # 11. Create Contracts
+    contracts = [
+        Contract(
+            contract_number="RENT-2025-001",
+            client_id=1,
+            property_id=1,
+            employee_id=3,
+            signing_date=date.today() - timedelta(days=60),
+            start_date=date.today() - timedelta(days=50),
+            end_date=date.today() + timedelta(days=315),
+            monthly_rent=Decimal("75000"),
+            deposit_amount=Decimal("75000"),
+            deposit_paid=True,
+            contract_status='active',
+            payment_day=5,
+            payment_method='bank_transfer',
+            additional_services="Парковочное место, Интернет",
+            signed_electronically=True,
+            notes="Договор с физическим лицом. Клиент надежный, оплата всегда вовремя."
+        ),
+        Contract(
+            contract_number="RENT-2025-002",
+            client_id=2,
+            property_id=3,
+            employee_id=3,
+            signing_date=date.today() - timedelta(days=90),
+            start_date=date.today() - timedelta(days=80),
+            end_date=date.today() + timedelta(days=285),
+            monthly_rent=Decimal("95000"),
+            deposit_amount=Decimal("95000"),
+            deposit_paid=True,
+            contract_status='active',
+            payment_day=1,
+            payment_method='bank_transfer',
+            additional_services="Парковочное место, Уборка помещения, Интернет",
+            signed_electronically=False,
+            notes="Долгосрочный договор аренды с компанией."
+        ),
+        Contract(
+            contract_number="RENT-2024-089",
+            client_id=3,
+            property_id=5,
+            employee_id=3,
+            signing_date=date.today() - timedelta(days=180),
+            start_date=date.today() - timedelta(days=170),
+            end_date=date.today() - timedelta(days=10),
+            monthly_rent=Decimal("55000"),
+            deposit_amount=Decimal("55000"),
+            deposit_paid=True,
+            contract_status='expired',
+            payment_day=10,
+            payment_method='cash',
+            additional_services="Интернет",
+            signed_electronically=True,
+            notes="Договор истек. Клиент съехал без проблем, залог возвращен."
+        ),
+    ]
+    db.add_all(contracts)
+    db.commit()
+    print("✓ Contracts created")
+
+    # 12. Create Reviews
     reviews = [
         Review(
             client_id=1,

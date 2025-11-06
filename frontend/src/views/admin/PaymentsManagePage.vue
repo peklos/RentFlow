@@ -1,12 +1,13 @@
 <template>
-  <div class="payments-manage">
-    <div class="page-header">
-      <div>
-        <h1>Управление платежами</h1>
-        <p class="subtitle">Все платежи по договорам аренды</p>
+  <AdminLayout>
+    <div class="payments-manage">
+      <div class="page-header">
+        <div>
+          <h1>Управление платежами</h1>
+          <p class="subtitle">Все платежи по договорам аренды</p>
+        </div>
+        <BaseButton variant="primary" @click="showCreateModal = true">+ Добавить платеж</BaseButton>
       </div>
-      <BaseButton variant="primary" @click="showCreateModal = true">+ Добавить платеж</BaseButton>
-    </div>
 
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
@@ -88,12 +89,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { paymentsAPI } from '@/api/services/payments'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
 const payments = ref([])
@@ -178,7 +180,6 @@ const getStatusClass = (status) => {
 .payments-manage {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .page-header {

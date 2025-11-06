@@ -1,11 +1,12 @@
 <template>
-  <div class="reviews-manage">
-    <div class="page-header">
-      <div>
-        <h1>Управление отзывами</h1>
-        <p class="subtitle">Модерация отзывов клиентов</p>
+  <AdminLayout>
+    <div class="reviews-manage">
+      <div class="page-header">
+        <div>
+          <h1>Управление отзывами</h1>
+          <p class="subtitle">Модерация отзывов клиентов</p>
+        </div>
       </div>
-    </div>
 
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
@@ -31,12 +32,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { reviewsAPI } from '@/api/services/reviews'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
 const reviews = ref([])
@@ -86,7 +88,6 @@ const formatDate = (date) => {
 .reviews-manage {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .page-header h1 {

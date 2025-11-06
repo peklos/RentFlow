@@ -1,151 +1,154 @@
 <template>
-  <div class="clients-manage">
-    <div class="page-header">
-      <div>
-        <h1>Clients Management</h1>
-        <p class="subtitle">View and manage client information</p>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Total Clients</div>
-        <div class="stat-value">{{ clients.length }}</div>
-      </div>
-      <div class="stat-card verified">
-        <div class="stat-label">Verified Clients</div>
-        <div class="stat-value">{{ stats.verified }}</div>
-      </div>
-      <div class="stat-card active">
-        <div class="stat-label">With Active Contracts</div>
-        <div class="stat-value">{{ stats.withContracts }}</div>
-      </div>
-    </div>
-
-    <!-- Loading State -->
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading clients...</p>
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="error-state">
-      <p>{{ error }}</p>
-      <BaseButton @click="loadClients">Retry</BaseButton>
-    </div>
-
-    <!-- Clients List -->
-    <div v-else-if="clients.length > 0" class="clients-list">
-      <BaseCard v-for="client in clients" :key="client.id" elevated class="client-card">
-        <div class="client-header">
-          <div class="client-avatar">
-            <span class="avatar-icon">👤</span>
-          </div>
-          <div class="client-main-info">
-            <h3>{{ client.full_name }}</h3>
-            <p class="client-type">{{ client.type === 'individual' ? 'Individual' : 'Company' }}</p>
-          </div>
-          <span v-if="client.is_verified" class="verified-badge" title="Verified">
-            ✓ Verified
-          </span>
+  <AdminLayout>
+    <div class="clients-manage">
+      <div class="page-header">
+        <div>
+          <h1>Управление клиентами</h1>
+          <p class="subtitle">Просмотр и управление информацией о клиентах</p>
         </div>
+      </div>
 
-        <div class="client-details">
-          <div class="detail-section">
-            <h4>Contact Information</h4>
-            <div class="detail-grid">
-              <div class="detail-row">
-                <span class="label">Phone:</span>
-                <span class="value">{{ client.phone || 'N/A' }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">Email:</span>
-                <span class="value">{{ client.email || 'N/A' }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">Address:</span>
-                <span class="value">{{ client.address || 'N/A' }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div v-if="client.type === 'individual'" class="detail-section">
-            <h4>Personal Information</h4>
-            <div class="detail-grid">
-              <div class="detail-row">
-                <span class="label">Date of Birth:</span>
-                <span class="value">{{ formatDate(client.date_of_birth) }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">Passport:</span>
-                <span class="value">{{ client.passport_series_number || 'N/A' }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">INN:</span>
-                <span class="value">{{ client.inn || 'N/A' }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div v-if="client.type === 'company'" class="detail-section">
-            <h4>Company Information</h4>
-            <div class="detail-grid">
-              <div class="detail-row">
-                <span class="label">Company Name:</span>
-                <span class="value">{{ client.company_name || 'N/A' }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">INN:</span>
-                <span class="value">{{ client.inn || 'N/A' }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">KPP:</span>
-                <span class="value">{{ client.kpp || 'N/A' }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="detail-section">
-            <h4>System Information</h4>
-            <div class="detail-grid">
-              <div class="detail-row">
-                <span class="label">Client ID:</span>
-                <span class="value">#{{ client.id }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">Registered:</span>
-                <span class="value">{{ formatDate(client.created_at) }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="label">Verification:</span>
-                <span :class="['value', client.is_verified ? 'verified' : 'not-verified']">
-                  {{ client.is_verified ? 'Verified' : 'Not Verified' }}
-                </span>
-              </div>
-            </div>
-          </div>
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Всего клиентов</div>
+          <div class="stat-value">{{ clients.length }}</div>
         </div>
-
-        <div class="client-actions">
-          <BaseButton variant="secondary" size="small" @click="viewClientDetails(client.id)">
-            View Full Profile
-          </BaseButton>
+        <div class="stat-card verified">
+          <div class="stat-label">Верифицированные</div>
+          <div class="stat-value">{{ stats.verified }}</div>
         </div>
-      </BaseCard>
-    </div>
+        <div class="stat-card active">
+          <div class="stat-label">С активными договорами</div>
+          <div class="stat-value">{{ stats.withContracts }}</div>
+        </div>
+      </div>
 
-    <!-- Empty State -->
-    <div v-else class="empty-state">
-      <p>No clients found</p>
-      <p class="text-secondary">Clients will appear here when they register</p>
+      <!-- Loading State -->
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка клиентов...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="error-state">
+        <p>{{ error }}</p>
+        <BaseButton @click="loadClients">Повторить</BaseButton>
+      </div>
+
+      <!-- Clients List -->
+      <div v-else-if="clients.length > 0" class="clients-list">
+        <BaseCard v-for="client in clients" :key="client.id" elevated class="client-card">
+          <div class="client-header">
+            <div class="client-avatar">
+              <span class="avatar-icon">👤</span>
+            </div>
+            <div class="client-main-info">
+              <h3>{{ client.full_name }}</h3>
+              <p class="client-type">{{ client.type === 'individual' ? 'Физическое лицо' : 'Компания' }}</p>
+            </div>
+            <span v-if="client.is_verified" class="verified-badge" title="Верифицирован">
+              ✓ Верифицирован
+            </span>
+          </div>
+
+          <div class="client-details">
+            <div class="detail-section">
+              <h4>Контактная информация</h4>
+              <div class="detail-grid">
+                <div class="detail-row">
+                  <span class="label">Телефон:</span>
+                  <span class="value">{{ client.phone || 'Не указано' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Email:</span>
+                  <span class="value">{{ client.email || 'Не указано' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Адрес:</span>
+                  <span class="value">{{ client.address || 'Не указано' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="client.type === 'individual'" class="detail-section">
+              <h4>Личная информация</h4>
+              <div class="detail-grid">
+                <div class="detail-row">
+                  <span class="label">Дата рождения:</span>
+                  <span class="value">{{ formatDate(client.date_of_birth) }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Паспорт:</span>
+                  <span class="value">{{ client.passport_series_number || 'Не указано' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">ИНН:</span>
+                  <span class="value">{{ client.inn || 'Не указано' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="client.type === 'company'" class="detail-section">
+              <h4>Информация о компании</h4>
+              <div class="detail-grid">
+                <div class="detail-row">
+                  <span class="label">Название компании:</span>
+                  <span class="value">{{ client.company_name || 'Не указано' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">ИНН:</span>
+                  <span class="value">{{ client.inn || 'Не указано' }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">КПП:</span>
+                  <span class="value">{{ client.kpp || 'Не указано' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h4>Системная информация</h4>
+              <div class="detail-grid">
+                <div class="detail-row">
+                  <span class="label">ID клиента:</span>
+                  <span class="value">#{{ client.id }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Зарегистрирован:</span>
+                  <span class="value">{{ formatDate(client.created_at) }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Верификация:</span>
+                  <span :class="['value', client.is_verified ? 'verified' : 'not-verified']">
+                    {{ client.is_verified ? 'Верифицирован' : 'Не верифицирован' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-actions">
+            <BaseButton variant="secondary" size="small" @click="viewClientDetails(client.id)">
+              Просмотр полного профиля
+            </BaseButton>
+          </div>
+        </BaseCard>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        <p>Клиенты не найдены</p>
+        <p class="text-secondary">Клиенты появятся здесь после регистрации</p>
+      </div>
     </div>
-  </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { adminAPI } from '@/api/services/admin'
+import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
@@ -167,7 +170,7 @@ const loadClients = async () => {
     const response = await adminAPI.getClients()
     clients.value = response.data
   } catch (err) {
-    error.value = err.response?.data?.detail || 'Failed to load clients'
+    error.value = err.response?.data?.detail || 'Не удалось загрузить клиентов'
     console.error('Error loading clients:', err)
   } finally {
     loading.value = false
@@ -177,13 +180,13 @@ const loadClients = async () => {
 const viewClientDetails = (clientId) => {
   // This could navigate to a detailed client page or open a modal
   console.log('View client details:', clientId)
-  alert(`Client details view for ID: ${clientId}\n\nThis feature can be expanded to show more detailed information, contracts, applications, and payment history.`)
+  alert(`Просмотр деталей клиента ID: ${clientId}\n\nЭта функция может быть расширена для отображения подробной информации, договоров, заявок и истории платежей.`)
 }
 
 const formatDate = (dateString) => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return 'Не указано'
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -199,7 +202,6 @@ onMounted(() => {
 .clients-manage {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .page-header {
@@ -273,6 +275,10 @@ onMounted(() => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.text-secondary {
+  color: var(--text-secondary);
 }
 
 /* Clients List */
@@ -390,10 +396,6 @@ onMounted(() => {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .clients-manage {
-    padding: 1rem;
-  }
-
   .client-header {
     flex-direction: column;
     align-items: flex-start;
