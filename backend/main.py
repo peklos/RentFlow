@@ -101,7 +101,8 @@ def read_root():
         ]
     }
 
-# Health check
+# Health check endpoints for uptime monitoring
 @app.get("/health")
+@app.head("/health")
 def health_check():
     return {"status": "healthy", "service": "RentFlow API v2.0"}
