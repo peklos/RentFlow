@@ -8,24 +8,21 @@
 
         <!-- Filters -->
         <BaseCard class="mb-xl">
+          <h3 class="text-lg font-semibold mb-md">🔍 Фильтры поиска</h3>
           <div class="grid grid-cols-4 gap-md">
-            <div class="filter-group">
-              <label class="filter-label">Тип</label>
-              <select v-model="filters.type" class="filter-select">
-                <option value="">Все типы</option>
-                <option value="Квартира">Квартира</option>
-                <option value="Студия">Студия</option>
-                <option value="Пентхаус">Пентхаус</option>
-                <option value="Таунхаус">Таунхаус</option>
-                <option value="Коттедж">Коттедж</option>
-                <option value="Офис">Офис</option>
-                <option value="Торговое помещение">Торговое помещение</option>
-              </select>
-            </div>
-            <BaseInput v-model="filters.min_price" label="Мин. цена" type="number" />
-            <BaseInput v-model="filters.max_price" label="Макс. цена" type="number" />
+            <BaseInput v-model.number="filters.min_price" label="Мин. цена ₽" type="number" placeholder="от 30 000" />
+            <BaseInput v-model.number="filters.max_price" label="Макс. цена ₽" type="number" placeholder="до 200 000" />
+            <BaseInput v-model.number="filters.min_area" label="Мин. площадь м²" type="number" placeholder="от 30" />
+            <BaseInput v-model.number="filters.max_area" label="Макс. площадь м²" type="number" placeholder="до 300" />
+          </div>
+          <div class="grid grid-cols-4 gap-md mt-md">
+            <BaseInput v-model.number="filters.rooms_count" label="Количество комнат" type="number" placeholder="1, 2, 3..." />
+            <BaseInput v-model.number="filters.floor" label="Этаж" type="number" placeholder="любой" />
+            <BaseButton variant="secondary" @click="resetFilters" style="margin-top: 1.5rem;">
+              Сбросить
+            </BaseButton>
             <BaseButton variant="primary" @click="applyFilters" style="margin-top: 1.5rem;">
-              Применить
+              Применить фильтры
             </BaseButton>
           </div>
         </BaseCard>
@@ -106,10 +103,12 @@ const propertiesStore = usePropertiesStore()
 const properties = ref([])
 const loading = ref(false)
 const filters = ref({
-  type: '',
   min_price: null,
   max_price: null,
-  status: ''  // Show all properties, not just available
+  min_area: null,
+  max_area: null,
+  rooms_count: null,
+  floor: null
 })
 
 onMounted(async () => {
@@ -136,6 +135,18 @@ const applyFilters = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const resetFilters = async () => {
+  filters.value = {
+    min_price: null,
+    max_price: null,
+    min_area: null,
+    max_area: null,
+    rooms_count: null,
+    floor: null
+  }
+  await fetchProperties()
 }
 
 const formatMoney = (value) => {
