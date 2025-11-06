@@ -9,11 +9,11 @@
         <BaseButton variant="primary" @click="showCreateModal = true">+ Добавить платеж</BaseButton>
       </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-    </div>
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+      </div>
 
-    <div v-else class="table-container">
+      <div v-else class="table-container">
       <table class="data-table">
         <thead>
           <tr>
@@ -43,10 +43,10 @@
           </tr>
         </tbody>
       </table>
-    </div>
+      </div>
 
-    <!-- Create/Edit Modal -->
-    <div v-if="showCreateModal || editingPayment" class="modal-overlay" @click.self="closeModal">
+      <!-- Create/Edit Modal -->
+      <div v-if="showCreateModal || editingPayment" class="modal-overlay" @click.self="closeModal">
       <div class="modal">
         <div class="modal-header">
           <h2>{{ editingPayment ? 'Редактировать платеж' : 'Новый платеж' }}</h2>
@@ -87,6 +87,7 @@
             </div>
           </form>
         </div>
+      </div>
       </div>
     </div>
   </AdminLayout>
