@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Payment
 from schemas.payment import PaymentResponse, PaymentUpdate
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -15,7 +14,6 @@ async def get_all_payments(
     status: str = None,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, le=100),
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all payments (admin)"""
@@ -32,7 +30,6 @@ async def get_all_payments(
 async def update_payment(
     payment_id: int,
     payment_data: PaymentUpdate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Update payment (admin)"""

@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Employee
 from schemas.employee import EmployeeCreate, EmployeeUpdate, EmployeeResponse
-from utils.security import require_role, get_password_hash
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ router = APIRouter()
 @router.post("/", response_model=EmployeeResponse, status_code=201)
 async def create_employee(
     employee_data: EmployeeCreate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Create a new employee (admin)"""
@@ -38,7 +36,6 @@ async def create_employee(
 async def get_all_employees(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, le=100),
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all employees (admin)"""

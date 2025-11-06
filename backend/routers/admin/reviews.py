@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Review
 from schemas.review import ReviewUpdate, ReviewResponse
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ router = APIRouter()
 @router.get("/", response_model=List[ReviewResponse])
 async def get_all_reviews(
     is_approved: bool = None,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all reviews (admin)"""
@@ -30,7 +28,6 @@ async def get_all_reviews(
 async def update_review(
     review_id: int,
     review_data: ReviewUpdate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Approve or reject review (admin)"""

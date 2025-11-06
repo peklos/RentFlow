@@ -5,7 +5,6 @@ from typing import List
 from db.database import get_db
 from db.models import Contract
 from schemas.contract import ContractCreate, ContractUpdate, ContractResponse
-from utils.security import require_role
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ router = APIRouter()
 @router.post("/", response_model=ContractResponse, status_code=201)
 async def create_contract(
     contract_data: ContractCreate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Create a new contract (admin)"""
@@ -30,7 +28,6 @@ async def get_all_contracts(
     status: str = None,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, le=100),
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Get all contracts (admin)"""
@@ -47,7 +44,6 @@ async def get_all_contracts(
 async def update_contract(
     contract_id: int,
     contract_data: ContractUpdate,
-    current_user: dict = Depends(require_role("employee")),
     db: Session = Depends(get_db)
 ):
     """Update contract (admin)"""
