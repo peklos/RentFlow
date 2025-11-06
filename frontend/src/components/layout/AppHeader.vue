@@ -23,12 +23,27 @@
         <router-link to="/properties" class="nav-link">Объекты</router-link>
 
         <template v-if="authStore.isAuthenticated">
-          <router-link v-if="authStore.isClient" to="/client/profile" class="nav-link">
-            Мой Профиль
-          </router-link>
-          <router-link v-if="authStore.isEmployee" to="/admin/dashboard" class="nav-link">
-            Панель
-          </router-link>
+          <template v-if="authStore.isClient">
+            <router-link to="/client/profile" class="nav-link">Профиль</router-link>
+            <router-link to="/client/applications" class="nav-link">Заявки</router-link>
+            <router-link to="/client/contracts" class="nav-link">Договоры</router-link>
+            <router-link to="/client/payments" class="nav-link">Платежи</router-link>
+            <router-link to="/client/reviews" class="nav-link">Отзывы</router-link>
+            <router-link to="/client/services" class="nav-link">Услуги</router-link>
+          </template>
+          <template v-if="authStore.isEmployee">
+            <router-link to="/admin/dashboard" class="nav-link">Дашборд</router-link>
+            <router-link to="/admin/properties" class="nav-link">Объекты</router-link>
+            <router-link to="/admin/clients" class="nav-link">Клиенты</router-link>
+            <router-link to="/admin/applications" class="nav-link">Заявки</router-link>
+            <router-link to="/admin/payments" class="nav-link">Платежи</router-link>
+            <router-link to="/admin/reviews" class="nav-link">Отзывы</router-link>
+            <router-link to="/admin/companies" class="nav-link">Компании</router-link>
+            <router-link to="/admin/positions" class="nav-link">Должности</router-link>
+            <router-link to="/admin/employees" class="nav-link">Сотрудники</router-link>
+            <router-link to="/admin/services" class="nav-link">Услуги</router-link>
+            <router-link to="/admin/verifications" class="nav-link">Верификации</router-link>
+          </template>
           <BaseButton variant="ghost" @click="handleLogout">Выйти</BaseButton>
         </template>
         <template v-else>

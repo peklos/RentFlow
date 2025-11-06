@@ -26,7 +26,18 @@
         <!-- Search Box -->
         <div class="search-box card-elevated">
           <div class="grid grid-cols-4 gap-md">
-            <BaseInput placeholder="Москва" label="Локация" />
+            <div class="filter-group">
+              <label class="filter-label">Локация</label>
+              <select class="filter-select">
+                <option value="">Все локации</option>
+                <option value="Москва, Арбат">Москва, Арбат</option>
+                <option value="Москва, Ленинский проспект">Москва, Ленинский проспект</option>
+                <option value="Москва, Бауманская">Москва, Бауманская</option>
+                <option value="Москва, Кутузовский проспект">Москва, Кутузовский проспект</option>
+                <option value="Москва, Проспект Мира">Москва, Проспект Мира</option>
+                <option value="Москва, Москва-Сити">Москва, Москва-Сити</option>
+              </select>
+            </div>
             <BaseInput placeholder="50 000" label="Мин. цена" type="number" />
             <BaseInput placeholder="2" label="Комнат" type="number" />
             <BaseButton variant="primary" style="margin-top: 1.5rem;">
@@ -308,6 +319,46 @@ import BaseCard from '@/components/common/BaseCard.vue'
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.filter-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.filter-select {
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 @media (max-width: 768px) {
