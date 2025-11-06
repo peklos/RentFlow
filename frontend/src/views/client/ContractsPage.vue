@@ -136,8 +136,8 @@ const loadContracts = async () => {
     contracts.value = response.data
 
     // If user is logged in, filter by their client_id
-    if (authStore.user && authStore.user.id) {
-      contracts.value = contracts.value.filter(c => c.client_id === authStore.user.id)
+    if (authStore.user && authStore.user.client_id) {
+      contracts.value = contracts.value.filter(c => c.client_id === authStore.user.client_id)
     }
   } catch (err) {
     error.value = err.response?.data?.detail || 'Failed to load contracts'
