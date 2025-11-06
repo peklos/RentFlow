@@ -217,6 +217,113 @@ def create_initial_data(db: Session):
             status="available",
             published_at=datetime.now()
         ),
+        Property(
+            type="residential",
+            subtype="Квартира",
+            address="Москва, Тверская ул., 28, кв. 15",
+            area=Decimal("52.0"),
+            rooms_count=1,
+            floor=4,
+            total_floors=10,
+            renovation_type="Косметический",
+            is_furnished=True,
+            monthly_rent=Decimal("55000"),
+            utilities_included=False,
+            deposit_amount=Decimal("55000"),
+            description="Однокомнатная квартира в центре Москвы, рядом с метро Тверская",
+            amenities="Wi-Fi, Стиральная машина, Балкон",
+            status="available",
+            published_at=datetime.now()
+        ),
+        Property(
+            type="residential",
+            subtype="Студия",
+            address="Москва, Ленинский проспект, 92, кв. 8",
+            area=Decimal("28.0"),
+            rooms_count=1,
+            floor=2,
+            total_floors=7,
+            renovation_type="Евро",
+            is_furnished=True,
+            monthly_rent=Decimal("38000"),
+            utilities_included=False,
+            deposit_amount=Decimal("38000"),
+            description="Уютная студия для молодой пары или студента",
+            amenities="Wi-Fi, Кухонная техника, Холодильник",
+            status="available",
+            published_at=datetime.now()
+        ),
+        Property(
+            type="residential",
+            subtype="Квартира",
+            address="Москва, Ломоносовский проспект, 14, кв. 105",
+            area=Decimal("85.0"),
+            rooms_count=3,
+            floor=7,
+            total_floors=17,
+            renovation_type="Дизайнерский",
+            is_furnished=True,
+            monthly_rent=Decimal("120000"),
+            utilities_included=False,
+            deposit_amount=Decimal("120000"),
+            description="Трёхкомнатная квартира с дизайнерским ремонтом в престижном районе",
+            amenities="Wi-Fi, Посудомоечная машина, Кондиционер, Умный дом, Паркинг",
+            status="available",
+            published_at=datetime.now()
+        ),
+        Property(
+            type="residential",
+            subtype="Пентхаус",
+            address="Москва, Новый Арбат, 36, кв. 250",
+            area=Decimal("180.0"),
+            rooms_count=4,
+            floor=20,
+            total_floors=20,
+            renovation_type="Люкс",
+            is_furnished=True,
+            monthly_rent=Decimal("350000"),
+            utilities_included=True,
+            deposit_amount=Decimal("700000"),
+            description="Роскошный пентхаус с панорамным видом на Москва-Сити",
+            amenities="Панорамные окна, Терраса, Джакузи, Сауна, Умный дом, Консьерж",
+            status="available",
+            published_at=datetime.now()
+        ),
+        Property(
+            type="commercial",
+            subtype="Офис",
+            address="Москва, БЦ Садовая Галерея, 5 этаж",
+            area=Decimal("120.0"),
+            floor=5,
+            total_floors=15,
+            renovation_type="Бизнес-класс",
+            is_furnished=True,
+            monthly_rent=Decimal("180000"),
+            utilities_included=True,
+            deposit_amount=Decimal("360000"),
+            description="Офис в престижном бизнес-центре с отличной транспортной доступностью",
+            amenities="Ресепшн, Переговорные, Кухня, Охрана, Паркинг",
+            status="available",
+            published_at=datetime.now()
+        ),
+        Property(
+            type="residential",
+            subtype="Таунхаус",
+            address="Москва, Рублево-Успенское шоссе, КП Изумрудные холмы, 15",
+            area=Decimal("220.0"),
+            rooms_count=5,
+            floor=1,
+            total_floors=2,
+            renovation_type="Премиум",
+            is_furnished=True,
+            monthly_rent=Decimal("280000"),
+            utilities_included=False,
+            deposit_amount=Decimal("560000"),
+            description="Таунхаус в элитном поселке с развитой инфраструктурой",
+            amenities="Гараж, Придомовая территория, Охрана, Детская площадка",
+            status="available",
+            published_at=datetime.now()
+        ),
     ]
     db.add_all(properties)
     db.commit()
@@ -396,31 +503,73 @@ def create_initial_data(db: Session):
     # 10. Create Additional Services
     services = [
         AdditionalService(
-            name="Cleaning service",
-            description="Professional cleaning once a week",
+            name="Уборка помещения",
+            description="Профессиональная уборка 1 раз в неделю",
             price=Decimal("5000"),
-            unit="per month",
+            unit="в месяц",
             is_active=True
         ),
         AdditionalService(
-            name="Parking space",
-            description="Underground parking",
+            name="Парковочное место",
+            description="Подземная охраняемая парковка",
             price=Decimal("8000"),
-            unit="per month",
+            unit="в месяц",
             is_active=True
         ),
         AdditionalService(
-            name="Internet",
-            description="High-speed internet 100 Mbps",
+            name="Интернет",
+            description="Высокоскоростной интернет 100 Мбит/с",
             price=Decimal("1000"),
-            unit="per month",
+            unit="в месяц",
             is_active=True
         ),
         AdditionalService(
-            name="Furniture rental",
-            description="Full furniture package",
+            name="Аренда мебели",
+            description="Полный комплект мебели для квартиры",
             price=Decimal("15000"),
-            unit="per month",
+            unit="в месяц",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Консьерж-сервис",
+            description="Персональный консьерж 24/7",
+            price=Decimal("12000"),
+            unit="в месяц",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Химчистка",
+            description="Химчистка ковров и мебели",
+            price=Decimal("3500"),
+            unit="за услугу",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Кабельное ТВ",
+            description="Пакет из 150+ каналов",
+            price=Decimal("800"),
+            unit="в месяц",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Вывоз мусора",
+            description="Ежедневный вывоз мусора",
+            price=Decimal("500"),
+            unit="в месяц",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Хранение вещей",
+            description="Кладовка в здании 5 м²",
+            price=Decimal("4000"),
+            unit="в месяц",
+            is_active=True
+        ),
+        AdditionalService(
+            name="Доступ в спортзал",
+            description="Фитнес-центр в здании",
+            price=Decimal("6000"),
+            unit="в месяц",
             is_active=True
         ),
     ]

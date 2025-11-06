@@ -74,9 +74,13 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
     if not user.is_active:
         raise HTTPException(status_code=400, detail="Account is inactive")
 
+    # Get client profile
+    client = db.query(Client).filter(Client.user_id == user.id).first()
+
     # Return user info instead of token
     return {
         "id": user.id,
+        "client_id": client.id if client else None,
         "phone": user.phone,
         "email": user.email,
         "message": "Login successful"
