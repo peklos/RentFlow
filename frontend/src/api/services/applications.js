@@ -3,6 +3,7 @@ import apiClient from '../axios'
 export const applicationsAPI = {
   // Client endpoints
   create: (data) => apiClient.post('/client/applications', data),
+  getMyApplications: () => apiClient.get('/client/applications'),
   getAll: () => apiClient.get('/client/applications'),
   getById: (id) => apiClient.get(`/client/applications/${id}`),
 

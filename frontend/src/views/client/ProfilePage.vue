@@ -271,9 +271,11 @@ const loadProfile = async () => {
   error.value = null
   try {
     // Get client ID from auth store
-    const clientId = authStore.user?.client_id
+    const clientId = authStore.user?.client_id || authStore.user?.id
     if (!clientId) {
-      throw new Error('Client ID not found')
+      error.value = 'Пожалуйста, выйдите и войдите заново для обновления сессии'
+      loading.value = false
+      return
     }
 
     const response = await profileAPI.getProfile(clientId)
@@ -327,9 +329,10 @@ const openEditModal = () => {
 
 const saveProfile = async () => {
   try {
-    const clientId = authStore.user?.client_id
+    const clientId = authStore.user?.client_id || authStore.user?.id
     if (!clientId) {
-      throw new Error('Client ID not found')
+      alert('Ошибка: ID клиента не найден. Пожалуйста, выйдите и войдите заново.')
+      return
     }
 
     await profileAPI.updateProfile(clientId, editForm.value)
