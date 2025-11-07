@@ -18,6 +18,11 @@ const routes = [
     name: 'PropertyDetail',
     component: () => import('@/views/client/PropertyDetailPage.vue')
   },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/views/client/SearchPage.vue')
+  },
 
   // Client authentication
   {
