@@ -77,9 +77,9 @@
             </div>
 
             <!-- Special Conditions -->
-            <div v-if="contract.special_conditions" class="special-conditions">
+            <div v-if="contract.notes" class="special-conditions">
               <h5>Особые условия</h5>
-              <p>{{ contract.special_conditions }}</p>
+              <p>{{ contract.notes }}</p>
             </div>
 
             <!-- Actions -->
@@ -207,7 +207,7 @@
 
                 <div class="document-section">
                   <h4>5. ОСОБЫЕ УСЛОВИЯ</h4>
-                  <p v-if="selectedContract.special_conditions">{{ selectedContract.special_conditions }}</p>
+                  <p v-if="selectedContract.notes">{{ selectedContract.notes }}</p>
                   <p v-else class="text-secondary">Особых условий не установлено.</p>
                 </div>
 
