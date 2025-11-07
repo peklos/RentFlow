@@ -1080,6 +1080,24 @@ def create_initial_data(db: Session):
             notes="Квартира для родственников клиента."
         ),
         Contract(
+            contract_number="RENT-2025-004",
+            client_id=1,
+            property_id=4,
+            employee_id=1,
+            signing_date=date.today() - timedelta(days=30),
+            start_date=date.today() - timedelta(days=20),
+            end_date=date.today() + timedelta(days=345),
+            monthly_rent=Decimal("100000"),
+            deposit_amount=Decimal("100000"),
+            deposit_paid=True,
+            contract_status='active',
+            payment_day=15,
+            payment_method='Банковский перевод',
+            additional_services="Консьерж, Спортзал, Подземная парковка",
+            signed_electronically=True,
+            notes="Престижная квартира для деловых встреч и представительских целей."
+        ),
+        Contract(
             contract_number="RENT-2025-002",
             client_id=2,
             property_id=3,
