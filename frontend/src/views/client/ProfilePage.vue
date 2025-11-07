@@ -296,9 +296,18 @@ const loadStats = async () => {
       reviewsAPI.getMyReviews().catch(() => ({ data: [] }))
     ])
 
+    // Get client_id from auth store
+    const clientId = authStore.user?.client_id || authStore.user?.id
+
+    // Filter contracts by client_id (same logic as ContractsPage)
+    let userContracts = contractsRes.data || []
+    if (clientId && Array.isArray(userContracts)) {
+      userContracts = userContracts.filter(c => c.client_id === clientId)
+    }
+
     stats.value = {
       applications: appsRes.data?.length || 0,
-      contracts: contractsRes.data?.length || 0,
+      contracts: userContracts.length,
       reviews: reviewsRes.data?.length || 0
     }
   } catch (err) {
