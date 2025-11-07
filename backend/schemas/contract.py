@@ -44,6 +44,12 @@ class ContractResponse(BaseModel):
     contract_status: str
     payment_day: int
     payment_method: Optional[str] = None
+    additional_services: Optional[str] = None
+    contract_file_url: Optional[str] = None
+    signed_electronically: bool = False
+    termination_date: Optional[date] = None
+    termination_reason: Optional[str] = None
+    notes: Optional[str] = None
     created_at: datetime
 
     class Config:
