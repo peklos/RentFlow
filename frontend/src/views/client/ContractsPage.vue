@@ -101,9 +101,33 @@
               <div class="empty-icon">📄</div>
               <h3>Пока нет договоров</h3>
               <p>У вас пока нет договоров аренды. Когда ваша заявка будет одобрена и договор создан, он появится здесь.</p>
-              <BaseButton variant="primary" @click="goToApplications">
-                Мои заявки
-              </BaseButton>
+
+              <div class="info-blocks">
+                <div class="info-block">
+                  <div class="info-block-icon">🔍</div>
+                  <h4>Найдите объект</h4>
+                  <p>Просмотрите доступные объекты недвижимости</p>
+                </div>
+                <div class="info-block">
+                  <div class="info-block-icon">📝</div>
+                  <h4>Подайте заявку</h4>
+                  <p>Выберите подходящий объект и создайте заявку на аренду</p>
+                </div>
+                <div class="info-block">
+                  <div class="info-block-icon">✅</div>
+                  <h4>Получите договор</h4>
+                  <p>После одобрения заявки будет создан договор аренды</p>
+                </div>
+              </div>
+
+              <div class="empty-actions">
+                <BaseButton variant="primary" @click="goToApplications">
+                  Мои заявки
+                </BaseButton>
+                <BaseButton variant="secondary" @click="router.push('/client/properties')">
+                  Все объекты
+                </BaseButton>
+              </div>
             </div>
           </BaseCard>
         </div>
@@ -251,7 +275,7 @@ const loadContracts = async () => {
       contracts.value = contracts.value.filter(c => c.client_id === authStore.user.client_id)
     }
   } catch (err) {
-    error.value = err.response?.data?.detail || 'Failed to load contracts'
+    error.value = err.response?.data?.detail || 'Не удалось загрузить договоры'
     console.error('Error loading contracts:', err)
   } finally {
     loading.value = false
@@ -605,13 +629,62 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.empty-content p {
+.empty-content > p {
   color: var(--text-secondary);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   font-size: 1.125rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.info-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.info-block {
+  padding: 2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-block:hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-4px);
+}
+
+.info-block-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.info-block h4 {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
+}
+
+.info-block p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 /* Responsive */

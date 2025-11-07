@@ -120,7 +120,7 @@
             </BaseCard>
 
             <!-- Statistics -->
-            <BaseCard elevated>
+            <BaseCard elevated class="stats-card">
               <div class="card-header">
                 <h3 class="section-title">
                   <span class="icon">📊</span>
@@ -564,6 +564,10 @@ const handleModalOpen = () => {
 }
 
 /* Statistics */
+.stats-card {
+  grid-column: 1 / -1;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
