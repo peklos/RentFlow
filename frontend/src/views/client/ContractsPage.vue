@@ -270,10 +270,20 @@ const loadContracts = async () => {
     const response = await contractsAPI.getAll()
     contracts.value = response.data
 
+    console.log('Total contracts from API:', contracts.value?.length || 0)
+    console.log('User data:', authStore.user)
+    console.log('Client ID:', authStore.user?.client_id)
+
     // If user is logged in, filter by their client_id
     if (authStore.user && authStore.user.client_id) {
+      const beforeFilter = contracts.value.length
       contracts.value = contracts.value.filter(c => c.client_id === authStore.user.client_id)
+      console.log(`Filtered contracts: ${beforeFilter} -> ${contracts.value.length}`)
+    } else {
+      console.warn('No client_id found in user data. User may need to re-login.')
     }
+
+    console.log('Final contracts to display:', contracts.value)
   } catch (err) {
     error.value = err.response?.data?.detail || 'Не удалось загрузить договоры'
     console.error('Error loading contracts:', err)
