@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 
 class ApplicationCreate(BaseModel):
+    client_id: int
     property_id: int
     preferred_move_in_date: Optional[date] = None
     lease_duration_months: Optional[int] = None

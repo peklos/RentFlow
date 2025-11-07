@@ -51,3 +51,19 @@ async def update_service(
     db.refresh(service)
 
     return service
+
+
+@router.delete("/{service_id}")
+async def delete_service(
+    service_id: int,
+    db: Session = Depends(get_db)
+):
+    """Delete service (admin)"""
+    service = db.query(AdditionalService).filter(AdditionalService.id == service_id).first()
+    if not service:
+        raise HTTPException(status_code=404, detail="Услуга не найдена")
+
+    db.delete(service)
+    db.commit()
+
+    return {"message": "Услуга успешно удалена"}

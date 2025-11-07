@@ -268,6 +268,7 @@ const submitApplication = async () => {
 
   try {
     const applicationData = {
+      client_id: authStore.user?.client_id || authStore.user?.id || 1,
       property_id: parseInt(route.params.id),
       preferred_move_in_date: applicationForm.value.preferred_move_in_date,
       lease_duration_months: parseInt(applicationForm.value.lease_duration_months),
