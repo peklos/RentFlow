@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import engine, Base, get_db
 from db.init_data import create_initial_data
+from db.update_translations import update_reviews_to_russian, update_services_to_russian
 
 # Import all routers
 from routers.client import auth as client_auth
@@ -51,8 +52,14 @@ async def startup_event():
     db = next(get_db())
     try:
         create_initial_data(db)
+
+        # Автоматическое обновление переводов на русский
+        print("🔄 Обновление переводов на русский язык...")
+        update_reviews_to_russian(db)
+        update_services_to_russian(db)
+        print("✅ Переводы обновлены")
     except Exception as e:
-        print(f"Создание начальных данных: {e}")
+        print(f"Ошибка при инициализации: {e}")
     finally:
         db.close()
 
