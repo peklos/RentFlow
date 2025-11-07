@@ -14,12 +14,24 @@
             Тысячи проверенных объектов для аренды. Современно, удобно и без лишних хлопот.
           </p>
           <div class="hero-actions">
-            <router-link to="/client/login">
-              <BaseButton variant="primary" size="lg">Вход для клиентов</BaseButton>
-            </router-link>
-            <router-link to="/employee/login">
-              <BaseButton variant="outline" size="lg">Вход для сотрудников</BaseButton>
-            </router-link>
+            <!-- Для залогиненных пользователей -->
+            <template v-if="authStore.isAuthenticated">
+              <router-link to="/properties">
+                <BaseButton variant="primary" size="lg">Все объекты</BaseButton>
+              </router-link>
+              <router-link to="/client/applications">
+                <BaseButton variant="outline" size="lg">Мои заявки</BaseButton>
+              </router-link>
+            </template>
+            <!-- Для незалогиненных -->
+            <template v-else>
+              <router-link to="/client/login">
+                <BaseButton variant="primary" size="lg">Вход для клиентов</BaseButton>
+              </router-link>
+              <router-link to="/employee/login">
+                <BaseButton variant="outline" size="lg">Вход для сотрудников</BaseButton>
+              </router-link>
+            </template>
           </div>
         </div>
       </div>
@@ -114,10 +126,13 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
+
+const authStore = useAuthStore()
 </script>
 
 <style scoped>

@@ -14,6 +14,8 @@ def update_reviews_to_russian(db: Session):
             "Отличная квартира! Чистая, современная и идеальное расположение. Очень рекомендую!",
         "Great apartment with beautiful views. Only minor issue with elevator sometimes.":
             "Прекрасная квартира с красивым видом. Единственная небольшая проблема - иногда лифт.",
+        "Living here for a month already. Very comfortable and quiet neighborhood!":
+            "Живу здесь уже месяц. Очень комфортный и тихий район!",
         "Nice place to stay. Would recommend!":
             "Приятное место для проживания. Рекомендую!",
         "Perfect location and amenities":
@@ -49,6 +51,7 @@ def update_services_to_russian(db: Session):
         "Internet": "Интернет",
         "Cable TV": "Кабельное ТВ",
         "Furniture rental": "Аренда мебели",
+        "Full furniture package": "Аренда мебели",
         "Concierge service": "Консьерж-сервис",
         "Dry cleaning": "Химчистка",
         "Trash removal": "Вывоз мусора",
@@ -64,11 +67,19 @@ def update_services_to_russian(db: Session):
         "High-speed internet 100 Mbps": "Высокоскоростной интернет 100 Мбит/с",
         "Cable TV package with 150+ channels": "Пакет из 150+ каналов",
         "Full apartment furniture set": "Полный комплект мебели для квартиры",
+        "Full furniture package": "Полный комплект мебели для квартиры",
         "Personal concierge 24/7": "Персональный консьерж 24/7",
         "Carpet and furniture dry cleaning": "Химчистка ковров и мебели",
         "Daily trash removal": "Ежедневный вывоз мусора",
         "5 m² storage in building": "Кладовка в здании 5 м²",
         "Fitness center in building": "Фитнес-центр в здании"
+    }
+
+    # Словарь для перевода единиц измерения
+    unit_translations = {
+        "per month": "в месяц",
+        "per service": "за услугу",
+        "monthly": "в месяц"
     }
 
     # Получаем все услуги
@@ -82,6 +93,9 @@ def update_services_to_russian(db: Session):
             updated = True
         if service.description in service_description_translations:
             service.description = service_description_translations[service.description]
+            updated = True
+        if service.unit in unit_translations:
+            service.unit = unit_translations[service.unit]
             updated = True
         if updated:
             updated_count += 1

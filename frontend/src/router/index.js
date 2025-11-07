@@ -23,12 +23,14 @@ const routes = [
   {
     path: '/client/login',
     name: 'ClientLogin',
-    component: () => import('@/views/auth/ClientLoginPage.vue')
+    component: () => import('@/views/auth/ClientLoginPage.vue'),
+    meta: { requiresGuest: true, role: 'client' }
   },
   {
     path: '/client/register',
     name: 'ClientRegister',
-    component: () => import('@/views/auth/ClientRegisterPage.vue')
+    component: () => import('@/views/auth/ClientRegisterPage.vue'),
+    meta: { requiresGuest: true, role: 'client' }
   },
 
   // Client protected routes
@@ -73,7 +75,8 @@ const routes = [
   {
     path: '/employee/login',
     name: 'EmployeeLogin',
-    component: () => import('@/views/auth/EmployeeLoginPage.vue')
+    component: () => import('@/views/auth/EmployeeLoginPage.vue'),
+    meta: { requiresGuest: true, role: 'employee' }
   },
 
   // Admin routes
@@ -158,6 +161,22 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
+  // Redirect authenticated users away from login/register pages
+  if (to.meta.requiresGuest) {
+    if (authStore.isAuthenticated) {
+      // Already authenticated - redirect based on role
+      if (authStore.userRole === 'client') {
+        next('/client/profile')
+      } else if (authStore.userRole === 'employee') {
+        next('/admin/dashboard')
+      } else {
+        next('/')
+      }
+      return
+    }
+  }
+
+  // Protect authenticated routes
   if (to.meta.requiresAuth) {
     if (!authStore.isAuthenticated) {
       // Not authenticated - redirect to login
@@ -166,15 +185,15 @@ router.beforeEach((to, from, next) => {
       } else {
         next('/employee/login')
       }
+      return
     } else if (to.meta.role && authStore.userRole !== to.meta.role) {
       // Wrong role
       next('/')
-    } else {
-      next()
+      return
     }
-  } else {
-    next()
   }
+
+  next()
 })
 
 export default router
