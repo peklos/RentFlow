@@ -33,9 +33,135 @@
               </router-link>
             </template>
           </div>
+
+          <div class="help-button-container">
+            <BaseButton variant="secondary" size="md" @click="showGuideModal = true">
+              📖 Справочник
+            </BaseButton>
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- Guide Modal -->
+    <div v-if="showGuideModal" class="modal-overlay" @click.self="showGuideModal = false">
+      <div class="modal-guide">
+        <div class="modal-header">
+          <h2>📖 Справочник по использованию RentFlow</h2>
+          <button class="close-btn" @click="showGuideModal = false">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="guide-section">
+            <h3>👋 Добро пожаловать!</h3>
+            <p>Этот справочник поможет вам быстро разобраться в работе с нашим сайтом. Мы подготовили пошаговые инструкции для каждого действия.</p>
+          </div>
+
+          <div class="guide-section">
+            <h3>🚀 Начало работы</h3>
+            <div class="guide-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Регистрация на сайте</h4>
+                <p>Нажмите кнопку "Вход для клиентов" на главной странице, затем выберите "Регистрация". Заполните форму с вашими данными: телефон, email и придумайте пароль.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Вход в систему</h4>
+                <p>После регистрации введите ваш номер телефона и пароль на странице входа. Нажмите кнопку "Войти".</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <h3>🏠 Поиск и аренда недвижимости</h3>
+            <div class="guide-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Просмотр объектов</h4>
+                <p>Перейдите в раздел "Все объекты" через главное меню. Вы увидите список доступной недвижимости с фотографиями и ценами.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4>Детали объекта</h4>
+                <p>Нажмите на любой объект, чтобы увидеть подробную информацию: количество комнат, площадь, этаж, удобства и стоимость аренды.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <h4>Подача заявки</h4>
+                <p>Если объект вам подходит, нажмите кнопку "Подать заявку на аренду". Заполните форму с датой заселения и сроком аренды.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <h3>📋 Управление заявками и договорами</h3>
+            <div class="guide-step">
+              <div class="step-number">6</div>
+              <div class="step-content">
+                <h4>Отслеживание заявок</h4>
+                <p>В разделе "Мои заявки" вы можете видеть статус всех ваших заявок: на рассмотрении, одобрена или отклонена.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">7</div>
+              <div class="step-content">
+                <h4>Просмотр договоров</h4>
+                <p>После одобрения заявки в разделе "Мои договоры" появится договор аренды. Здесь вы найдете все условия аренды и сроки оплаты.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <h3>💳 Оплата и платежи</h3>
+            <div class="guide-step">
+              <div class="step-number">8</div>
+              <div class="step-content">
+                <h4>Оплата аренды</h4>
+                <p>В разделе "Платежи" вы можете оплатить арендную плату. Выберите договор и нажмите "Оплатить". Оплата проходит безопасно через защищенный канал.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <h3>⭐ Дополнительные возможности</h3>
+            <div class="guide-step">
+              <div class="step-number">9</div>
+              <div class="step-content">
+                <h4>Дополнительные услуги</h4>
+                <p>В разделе "Услуги" можно заказать дополнительные услуги: уборку, парковку, интернет и другие удобства.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">10</div>
+              <div class="step-content">
+                <h4>Оставить отзыв</h4>
+                <p>После проживания вы можете оставить отзыв в разделе "Отзывы". Это поможет другим клиентам сделать выбор.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">11</div>
+              <div class="step-content">
+                <h4>Профиль</h4>
+                <p>В разделе "Профиль" вы можете обновить свои личные данные, контакты и информацию о работе.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section help-section">
+            <h3>💡 Нужна помощь?</h3>
+            <p>Если у вас возникли вопросы или трудности, наша служба поддержки работает 24/7. Мы всегда рады помочь!</p>
+            <p class="contact-info">📞 Телефон: +7 (999) 123-45-67</p>
+            <p class="contact-info">📧 Email: support@rentflow.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Features -->
     <section class="features-section">
@@ -126,6 +252,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
@@ -133,6 +260,7 @@ import BaseInput from '@/components/common/BaseInput.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
 
 const authStore = useAuthStore()
+const showGuideModal = ref(false)
 </script>
 
 <style scoped>
@@ -353,6 +481,156 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.help-button-container {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+/* Guide Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-guide {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+}
+
+.modal-header h2 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.guide-section {
+  margin-bottom: 2.5rem;
+}
+
+.guide-section h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.guide-section p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1.0625rem;
+}
+
+.guide-step {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border-left: 3px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.guide-step:hover {
+  background: rgba(59, 130, 246, 0.08);
+  transform: translateX(4px);
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+.step-content h4 {
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.step-content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.help-section {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.15));
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.help-section h3 {
+  color: var(--text-primary);
+}
+
+.contact-info {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+}
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2.5rem;
@@ -360,6 +638,10 @@ input[type="number"] {
 
   .hero-subtitle {
     font-size: 1.125rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
   }
 
   .grid-cols-3,
@@ -383,6 +665,32 @@ input[type="number"] {
   .wave-top,
   .wave-bottom {
     height: 60px;
+  }
+
+  .modal-guide {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .guide-step {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .step-number {
+    align-self: flex-start;
   }
 }
 </style>

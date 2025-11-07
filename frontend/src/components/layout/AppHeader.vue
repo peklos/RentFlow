@@ -30,6 +30,13 @@
 
       <!-- Navigation -->
       <nav :class="['nav-menu', { 'mobile-open': mobileMenuOpen }]">
+        <router-link to="/search" class="nav-link search-link" @click="mobileMenuOpen = false">
+          <svg class="search-icon-header" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Поиск
+        </router-link>
         <router-link to="/properties" class="nav-link" @click="mobileMenuOpen = false">
           <span class="nav-icon">🏢</span>
           Объекты
@@ -301,6 +308,15 @@ const handleLogout = () => {
 
 .nav-icon {
   font-size: 1.125rem;
+}
+
+.search-icon-header {
+  color: currentColor;
+  transition: all 0.3s ease;
+}
+
+.search-link:hover .search-icon-header {
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
 }
 
 /* Dropdown */
