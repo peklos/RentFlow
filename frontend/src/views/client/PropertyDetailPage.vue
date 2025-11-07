@@ -99,6 +99,80 @@
         </div>
       </div>
     </div>
+
+    <!-- Application Modal -->
+    <div v-if="showApplicationModal" class="modal-overlay" @click.self="closeApplicationModal">
+      <div class="modal-content">
+        <BaseCard elevated>
+          <div class="modal-header">
+            <h2>Подать заявку на аренду</h2>
+            <button class="close-btn" @click="closeApplicationModal">×</button>
+          </div>
+
+          <div v-if="submitSuccess" class="success-message">
+            <div class="success-icon">✓</div>
+            <h3>Заявка успешно подана!</h3>
+            <p>Переадресация на страницу заявок...</p>
+          </div>
+
+          <form v-else @submit.prevent="submitApplication" class="application-form">
+            <div class="property-summary">
+              <h4>{{ property.subtype }}</h4>
+              <p>{{ property.address }}</p>
+              <p class="price">₽{{ formatMoney(property.monthly_rent) }}/месяц</p>
+            </div>
+
+            <BaseInput
+              v-model="applicationForm.preferred_move_in_date"
+              type="date"
+              label="Желаемая дата заселения"
+              required
+            />
+
+            <BaseInput
+              v-model="applicationForm.lease_duration_months"
+              type="number"
+              label="Срок аренды (месяцев)"
+              min="1"
+              required
+            />
+
+            <div class="form-group">
+              <label for="notes">Дополнительная информация (необязательно)</label>
+              <textarea
+                id="notes"
+                v-model="applicationForm.notes"
+                rows="4"
+                placeholder="Расскажите о себе, укажите количество проживающих, наличие домашних животных и т.д."
+                class="form-textarea"
+              ></textarea>
+            </div>
+
+            <div v-if="submitError" class="error-message">
+              {{ submitError }}
+            </div>
+
+            <div class="modal-actions">
+              <BaseButton
+                type="button"
+                variant="ghost"
+                @click="closeApplicationModal"
+                :disabled="submitting"
+              >
+                Отмена
+              </BaseButton>
+              <BaseButton
+                type="submit"
+                variant="primary"
+                :loading="submitting"
+              >
+                Подать заявку
+              </BaseButton>
+            </div>
+          </form>
+        </BaseCard>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -106,14 +180,30 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { propertiesAPI } from '@/api/services/properties'
+import { applicationsAPI } from '@/api/services/applications'
+import { useAuthStore } from '@/stores/auth'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
+import BaseInput from '@/components/common/BaseInput.vue'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
+
 const property = ref(null)
 const loading = ref(true)
+
+// Application modal state
+const showApplicationModal = ref(false)
+const applicationForm = ref({
+  preferred_move_in_date: '',
+  lease_duration_months: 12,
+  notes: ''
+})
+const submitting = ref(false)
+const submitError = ref('')
+const submitSuccess = ref(false)
 
 onMounted(async () => {
   await loadProperty()
@@ -132,8 +222,72 @@ const loadProperty = async () => {
 }
 
 const applyForProperty = () => {
-  router.push('/client/applications')
-  alert('Функция подачи заявки в разработке')
+  // Check if user is authenticated
+  if (!authStore.isAuthenticated) {
+    router.push('/client/login')
+    return
+  }
+
+  // Check if user is a client
+  if (!authStore.isClient) {
+    alert('Только клиенты могут подавать заявки на аренду')
+    return
+  }
+
+  // Open application modal
+  showApplicationModal.value = true
+  submitError.value = ''
+  submitSuccess.value = false
+}
+
+const closeApplicationModal = () => {
+  showApplicationModal.value = false
+  applicationForm.value = {
+    preferred_move_in_date: '',
+    lease_duration_months: 12,
+    notes: ''
+  }
+  submitError.value = ''
+  submitSuccess.value = false
+}
+
+const submitApplication = async () => {
+  // Validation
+  if (!applicationForm.value.preferred_move_in_date) {
+    submitError.value = 'Пожалуйста, выберите дату заселения'
+    return
+  }
+
+  if (!applicationForm.value.lease_duration_months || applicationForm.value.lease_duration_months < 1) {
+    submitError.value = 'Пожалуйста, укажите срок аренды (минимум 1 месяц)'
+    return
+  }
+
+  submitting.value = true
+  submitError.value = ''
+
+  try {
+    const applicationData = {
+      property_id: parseInt(route.params.id),
+      preferred_move_in_date: applicationForm.value.preferred_move_in_date,
+      lease_duration_months: parseInt(applicationForm.value.lease_duration_months),
+      notes: applicationForm.value.notes || null
+    }
+
+    await applicationsAPI.create(applicationData)
+    submitSuccess.value = true
+
+    // Close modal after 2 seconds and redirect
+    setTimeout(() => {
+      closeApplicationModal()
+      router.push('/client/applications')
+    }, 2000)
+  } catch (error) {
+    console.error('Failed to submit application:', error)
+    submitError.value = error.response?.data?.detail || 'Не удалось подать заявку. Попробуйте снова.'
+  } finally {
+    submitting.value = false
+  }
 }
 
 const formatMoney = (value) => {
@@ -327,6 +481,192 @@ const getAmenities = (amenitiesString) => {
   font-size: 1rem;
 }
 
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.success-message {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.success-message h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.success-message p {
+  color: var(--text-secondary);
+}
+
+.application-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.property-summary {
+  padding: var(--spacing-lg);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.property-summary h4 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.property-summary p {
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.property-summary .price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-top: 0.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.form-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.error-message {
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  color: #ef4444;
+  font-size: 0.875rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  margin-top: var(--spacing-md);
+}
+
 @media (max-width: 1024px) {
   .property-grid {
     grid-template-columns: 1fr;
@@ -334,6 +674,14 @@ const getAmenities = (amenitiesString) => {
 
   .details-grid, .amenities-grid {
     grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button {
+    width: 100%;
   }
 }
 </style>

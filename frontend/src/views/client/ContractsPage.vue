@@ -33,8 +33,8 @@
                   {{ formatDate(contract.start_date) }} - {{ formatDate(contract.end_date) }}
                 </p>
               </div>
-              <span :class="['status-badge', contract.status]">
-                {{ getStatusText(contract.status) }}
+              <span :class="['status-badge', contract.contract_status]">
+                {{ getStatusText(contract.contract_status) }}
               </span>
             </div>
 
@@ -55,7 +55,7 @@
               </div>
               <div class="detail-item">
                 <span class="detail-label">Залог</span>
-                <span class="detail-value price">{{ formatPrice(contract.security_deposit) }}</span>
+                <span class="detail-value price">{{ formatPrice(contract.deposit_amount) }}</span>
               </div>
               <div class="detail-item">
                 <span class="detail-label">День платежа</span>
@@ -68,7 +68,7 @@
             </div>
 
             <!-- Payment Status -->
-            <div v-if="contract.status === 'active'" class="payment-reminder">
+            <div v-if="contract.contract_status === 'active'" class="payment-reminder">
               <div class="reminder-icon">💳</div>
               <div class="reminder-content">
                 <h5>Следующий платеж</h5>
@@ -87,7 +87,7 @@
               <BaseButton variant="secondary" size="small" @click="viewContractDetails(contract.id)">
                 Полный договор
               </BaseButton>
-              <BaseButton v-if="contract.status === 'active'" variant="primary" size="small">
+              <BaseButton v-if="contract.contract_status === 'active'" variant="primary" size="small">
                 Оплатить
               </BaseButton>
             </div>
@@ -214,8 +214,8 @@
                 <div class="document-section">
                   <h4>6. СТАТУС ДОГОВОРА</h4>
                   <div class="status-info">
-                    <span :class="['status-badge-large', selectedContract.status]">
-                      {{ getStatusText(selectedContract.status) }}
+                    <span :class="['status-badge-large', selectedContract.contract_status]">
+                      {{ getStatusText(selectedContract.contract_status) }}
                     </span>
                     <p v-if="selectedContract.signed_electronically" class="signature-info">
                       ✓ Подписан электронной подписью
