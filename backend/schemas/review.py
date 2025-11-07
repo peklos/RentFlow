@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 
 class ReviewCreate(BaseModel):
+    client_id: int
     property_id: Optional[int] = None
     rating: int = Field(..., ge=1, le=5)
     text: Optional[str] = None

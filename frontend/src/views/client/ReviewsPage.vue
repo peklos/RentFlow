@@ -65,11 +65,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import { reviewsAPI } from '@/api/services/reviews'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import BaseCard from '@/components/common/BaseCard.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 
+const authStore = useAuthStore()
 const reviews = ref([])
 const loading = ref(false)
 const showCreateModal = ref(false)
@@ -98,7 +100,13 @@ const fetchReviews = async () => {
 
 const submitReview = async () => {
   try {
-    await reviewsAPI.create(reviewForm.value)
+    // Add client_id from authStore
+    const reviewData = {
+      ...reviewForm.value,
+      client_id: authStore.user?.id || 1 // Fallback to 1 if no user
+    }
+
+    await reviewsAPI.create(reviewData)
     await fetchReviews()
     showCreateModal.value = false
     resetForm()
